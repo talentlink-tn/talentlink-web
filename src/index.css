@@ -1,0 +1,159 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Brand palette — extracted from Talent Link mockups */
+  --color-brand-blue-50: #eef4ff;
+  --color-brand-blue-100: #dbe7fe;
+  --color-brand-blue-400: #4f8cf7;
+  --color-brand-blue-500: #2f6fed;
+  --color-brand-blue-600: #1e56d6;
+  --color-brand-blue-700: #1a45ab;
+
+  --color-brand-teal-400: #22c1c3;
+  --color-brand-teal-500: #14b8a6;
+
+  --color-brand-green-400: #4ade80;
+  --color-brand-green-500: #22c55e;
+  --color-brand-green-600: #16a34a;
+
+  --color-ink-950: #05060a;
+  --color-ink-900: #0a0e17;
+  --color-ink-800: #10151f;
+  --color-ink-700: #1a2130;
+
+  --color-surface: #ffffff;
+  --color-surface-muted: #f6f8fb;
+  --color-surface-border: #e7eaf0;
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-tertiary: #94a3b8;
+
+  --animate-fade-in: fade-in 0.4s ease-out both;
+  --animate-slide-up: slide-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-scale-in: scale-in 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+}
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background: var(--color-surface-muted);
+    color: var(--color-text-primary);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+  }
+
+  #root {
+    min-height: 100dvh;
+  }
+
+  ::selection {
+    background: var(--color-brand-blue-100);
+  }
+
+  /* Slim, unobtrusive scrollbars for the app shell */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-text-tertiary) 50%, transparent);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .bg-brand-gradient {
+    background-image: linear-gradient(
+      90deg,
+      var(--color-brand-blue-500) 0%,
+      var(--color-brand-teal-500) 50%,
+      var(--color-brand-green-500) 100%
+    );
+  }
+
+  .text-brand-gradient {
+    background-image: linear-gradient(
+      90deg,
+      var(--color-brand-blue-500) 0%,
+      var(--color-brand-green-500) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .skeleton {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-surface-border) 30%,
+      #f0f2f6 45%,
+      var(--color-surface-border) 60%
+    );
+    background-size: 200% 100%;
+    animation: var(--animate-shimmer);
+  }
+}

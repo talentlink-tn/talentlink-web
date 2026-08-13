@@ -1,0 +1,110 @@
+import type { Application } from '@/types'
+
+export const applications: Application[] = [
+  {
+    id: 'app-1',
+    jobId: 'job-1',
+    status: 'interview',
+    appliedAt: '15 Mai 2026',
+    updatedAt: 'il y a 2 jours',
+    steps: [
+      { key: 'submitted', label: 'Candidature soumise', date: '15 Mai', state: 'done' },
+      { key: 'under_review', label: 'En examen', date: '16 Mai', state: 'done' },
+      { key: 'interview', label: 'Entretien', date: 'À planifier', state: 'current' },
+      { key: 'technical_test', label: 'Test technique', state: 'upcoming' },
+      { key: 'decision', label: 'Décision', state: 'upcoming' },
+    ],
+    evaluation: { overall: 4.2, technical: 4.5, experience: 4.0, training: 4.0, softSkills: 4.5, languages: 4.0 },
+    documents: [
+      { id: 'd1', name: 'CV_Yassine_BenAmor.pdf', type: 'pdf', date: '15 Mai 2026' },
+      { id: 'd2', name: 'Lettre_de_motivation.pdf', type: 'pdf', date: '15 Mai 2026' },
+      { id: 'd3', name: 'Diplome_Master_Informatique.pdf', type: 'pdf', date: '15 Mai 2026' },
+      { id: 'd4', name: 'Certificat_Anglais.pdf', type: 'pdf', date: '15 Mai 2026' },
+      { id: 'd5', name: 'Portfolio_Yassine_BenAmor.pdf', type: 'pdf', date: '15 Mai 2026' },
+    ],
+    interview: {
+      type: 'Entretien initial',
+      duration: '30 à 45 minutes',
+      with: 'Sarah Ben Ali · Recruteuse',
+      format: 'Visioconférence (Google Meet)',
+      objective: 'Mieux vous connaître et évaluer votre adéquation avec le poste.',
+      slots: [
+        { id: 's1', day: 'Mercredi', date: '22 Mai', time: '10:00' },
+        { id: 's2', day: 'Mercredi', date: '22 Mai', time: '14:00' },
+        { id: 's3', day: 'Jeudi', date: '23 Mai', time: '11:00' },
+        { id: 's4', day: 'Jeudi', date: '23 Mai', time: '15:00' },
+      ],
+      selectedSlotId: 's1',
+    },
+  },
+  {
+    id: 'app-2',
+    jobId: 'job-2',
+    status: 'under_review',
+    appliedAt: '10 Mai 2026',
+    updatedAt: 'il y a 5 jours',
+    steps: [
+      { key: 'submitted', label: 'Candidature soumise', date: '10 Mai', state: 'done' },
+      { key: 'under_review', label: 'En examen', date: '11 Mai', state: 'current' },
+      { key: 'interview', label: 'Entretien', state: 'upcoming' },
+      { key: 'technical_test', label: 'Test technique', state: 'upcoming' },
+      { key: 'decision', label: 'Décision', state: 'upcoming' },
+    ],
+    evaluation: { overall: 3.8, technical: 4.0, experience: 3.5, training: 4.0, softSkills: 3.8, languages: 3.5 },
+    documents: [
+      { id: 'd1', name: 'CV_Yassine_BenAmor.pdf', type: 'pdf', date: '10 Mai 2026' },
+      { id: 'd2', name: 'Portfolio_Design.pdf', type: 'pdf', date: '10 Mai 2026' },
+    ],
+  },
+  {
+    id: 'app-3',
+    jobId: 'job-3',
+    status: 'interview',
+    appliedAt: '2 Mai 2026',
+    updatedAt: 'il y a 1 semaine',
+    steps: [
+      { key: 'submitted', label: 'Candidature soumise', date: '2 Mai', state: 'done' },
+      { key: 'under_review', label: 'En examen', date: '3 Mai', state: 'done' },
+      { key: 'interview', label: 'Entretien', date: '10 Mai', state: 'done' },
+      { key: 'technical_test', label: 'Test technique', date: 'À planifier', state: 'current' },
+      { key: 'decision', label: 'Décision', state: 'upcoming' },
+    ],
+    evaluation: { overall: 4.0, technical: 3.8, experience: 4.2, training: 4.0, softSkills: 4.0, languages: 4.0 },
+    documents: [{ id: 'd1', name: 'CV_Yassine_BenAmor.pdf', type: 'pdf', date: '2 Mai 2026' }],
+  },
+  {
+    id: 'app-4',
+    jobId: 'job-4',
+    status: 'under_review',
+    appliedAt: '28 Avr 2026',
+    updatedAt: 'il y a 1 semaine',
+    steps: [
+      { key: 'submitted', label: 'Candidature soumise', date: '28 Avr', state: 'done' },
+      { key: 'under_review', label: 'En examen', date: '29 Avr', state: 'current' },
+      { key: 'interview', label: 'Entretien', state: 'upcoming' },
+      { key: 'technical_test', label: 'Test technique', state: 'upcoming' },
+      { key: 'decision', label: 'Décision', state: 'upcoming' },
+    ],
+    evaluation: { overall: 3.5, technical: 3.5, experience: 3.2, training: 3.8, softSkills: 3.5, languages: 3.5 },
+    documents: [{ id: 'd1', name: 'CV_Yassine_BenAmor.pdf', type: 'pdf', date: '28 Avr 2026' }],
+  },
+  {
+    id: 'app-5',
+    jobId: 'job-5',
+    status: 'refused',
+    appliedAt: '20 Avr 2026',
+    updatedAt: 'il y a 2 semaines',
+    steps: [
+      { key: 'submitted', label: 'Candidature soumise', date: '20 Avr', state: 'done' },
+      { key: 'under_review', label: 'En examen', date: '21 Avr', state: 'done' },
+      { key: 'interview', label: 'Entretien', date: '28 Avr', state: 'done' },
+      { key: 'technical_test', label: 'Test technique', state: 'upcoming' },
+      { key: 'decision', label: 'Décision', date: '2 Mai', state: 'done' },
+    ],
+    evaluation: { overall: 2.8, technical: 2.5, experience: 3.0, training: 3.0, softSkills: 2.8, languages: 2.8 },
+    documents: [{ id: 'd1', name: 'CV_Yassine_BenAmor.pdf', type: 'pdf', date: '20 Avr 2026' }],
+  },
+]
+
+export const getApplication = (id: string) => applications.find((a) => a.id === id)
+export const getApplicationByJob = (jobId: string) => applications.find((a) => a.jobId === jobId)

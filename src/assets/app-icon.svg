@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="tl-grad" x1="60" y1="0" x2="452" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2563EB" />
+      <stop offset="0.5" stop-color="#14B8A6" />
+      <stop offset="1" stop-color="#22C55E" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#05060A" />
+  <g transform="translate(76 136) scale(1.5)">
+    <circle cx="60" cy="46" r="24" fill="#2563EB" />
+    <circle cx="180" cy="46" r="24" fill="#22C55E" />
+    <path
+      d="M60,160 c50,0 70,-80 120,-80 a40,40 0 0 1 0,80 c-50,0 -70,-80 -120,-80 a40,40 0 1 0 0,80"
+      stroke="url(#tl-grad)"
+      stroke-width="24"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+</svg>

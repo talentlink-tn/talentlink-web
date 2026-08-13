@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <clipPath id="circle-crop-2"><circle cx="100" cy="100" r="100" /></clipPath>
+    <linearGradient id="blazer-grad" x1="0" y1="140" x2="0" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7C3AED" />
+      <stop offset="1" stop-color="#5B21B6" />
+    </linearGradient>
+  </defs>
+  <g clip-path="url(#circle-crop-2)">
+    <rect width="200" height="200" fill="#EDE7FE" />
+    <circle cx="145" cy="35" r="42" fill="#E2D8FC" />
+    <circle cx="25" cy="155" r="34" fill="#E2D8FC" />
+
+    <!-- long hair back layer -->
+    <path d="M46,120 C40,80 48,38 100,38 C152,38 160,80 154,120 C150,160 146,190 146,204 L54,204 C54,190 50,160 46,120 Z" fill="#3A2418" />
+
+    <!-- shoulders / blazer -->
+    <path d="M30,200 C30,150 60,136 100,136 C140,136 170,150 170,200 Z" fill="url(#blazer-grad)" />
+    <path d="M100,136 L100,162 L84,148 L92,142 Z" fill="#F3EEFD" />
+    <path d="M100,136 L100,162 L116,148 L108,142 Z" fill="#F3EEFD" />
+
+    <!-- neck -->
+    <rect x="84" y="118" width="32" height="32" rx="10" fill="#EFC49B" />
+    <rect x="84" y="118" width="32" height="13" rx="6" fill="#E3AE7D" opacity="0.5" />
+
+    <!-- face -->
+    <ellipse cx="100" cy="92" rx="38" ry="43" fill="#F6D1AA" />
+    <ellipse cx="63" cy="94" rx="5.5" ry="8" fill="#F6D1AA" />
+    <ellipse cx="137" cy="94" rx="5.5" ry="8" fill="#F6D1AA" />
+
+    <!-- blush -->
+    <ellipse cx="72" cy="106" rx="8" ry="5" fill="#EE9C8D" opacity="0.35" />
+    <ellipse cx="128" cy="106" rx="8" ry="5" fill="#EE9C8D" opacity="0.35" />
+
+    <!-- front hair framing face -->
+    <path d="M56,88 C52,54 72,32 100,32 C128,32 148,54 144,88 C142,66 128,50 100,50 C72,50 58,66 56,88 Z" fill="#3A2418" />
+    <path d="M58,90 C50,110 48,140 52,168 C60,140 60,112 66,92 Z" fill="#3A2418" />
+    <path d="M142,90 C150,110 152,140 148,168 C140,140 140,112 134,92 Z" fill="#3A2418" />
+
+    <!-- eyebrows -->
+    <path d="M70,80 C75,76 83,76 88,79" stroke="#3A2418" stroke-width="3" stroke-linecap="round" fill="none" />
+    <path d="M112,79 C117,76 125,76 130,80" stroke="#3A2418" stroke-width="3" stroke-linecap="round" fill="none" />
+
+    <!-- eyes -->
+    <ellipse cx="79" cy="90" rx="4" ry="4.6" fill="#2B211B" />
+    <ellipse cx="121" cy="90" rx="4" ry="4.6" fill="#2B211B" />
+    <path d="M72,88 C75,85 83,85 86,88" stroke="#2B211B" stroke-width="2" stroke-linecap="round" fill="none" />
+    <path d="M114,88 C117,85 125,85 128,88" stroke="#2B211B" stroke-width="2" stroke-linecap="round" fill="none" />
+
+    <!-- earrings -->
+    <circle cx="63" cy="106" r="2.6" fill="#D4AF37" />
+    <circle cx="137" cy="106" r="2.6" fill="#D4AF37" />
+
+    <!-- nose + smile -->
+    <path d="M98,96 C97,103 96,108 100,110" stroke="#DDA679" stroke-width="2" stroke-linecap="round" fill="none" />
+    <path d="M85,117 C91,124 109,124 115,117" stroke="#B0563A" stroke-width="3" stroke-linecap="round" fill="none" />
+  </g>
+</svg>

@@ -1,0 +1,33 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Vite's own *.local pattern above only matches names ending in ".local"
+# (e.g. .env.local) — it does NOT match a plain ".env", which is what
+# this project actually uses for VITE_API_BASE_URL. Without this, a
+# bare `git add .` would happily stage it.
+.env
+.env.*
+!.env.example
+
+# Editor/tooling directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.claude/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
