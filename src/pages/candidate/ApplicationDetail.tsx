@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/Button'
 import { getApplication } from '@/data/applications'
 import { getJob } from '@/data/jobs'
 import { getCompany } from '@/data/companies'
-import { conversations } from '@/data/messages'
 import { useApp, getMyApplication } from '@/context/AppContext'
 import type { Application } from '@/types'
 import { cn } from '@/utils/cn'
@@ -29,7 +28,7 @@ const statusMessages: Record<string, string> = {
 export function ApplicationDetail() {
   const { applicationId } = useParams()
   const navigate = useNavigate()
-  const { applications, applicationsLoading, withdrawApplication } = useApp()
+  const { applications, applicationsLoading, withdrawApplication, conversations } = useApp()
   const [tab, setTab] = useState<(typeof tabs)[number]>('Aperçu')
   const [fetched, setFetched] = useState<Application | null>(null)
   const [fetchFailed, setFetchFailed] = useState(false)
@@ -54,7 +53,7 @@ export function ApplicationDetail() {
   const job = getJob(application.jobId)
   if (!job) return <Navigate to="/app/applications" replace />
   const company = getCompany(job.companyId)
-  const conversation = conversations.find((c) => c.companyId === job.companyId)
+  const conversation = conversations.find((c) => c.application_id === application.id)
 
   const evalItems: { label: string; value: number }[] = [
     { label: 'Compétences techniques', value: application.evaluation.technical },
@@ -166,20 +165,25 @@ export function ApplicationDetail() {
           <div>
             {conversation ? (
               <button
-                onClick={() => navigate(`/app/messages/${conversation.id}`)}
+                onClick={() => navigate(`/app/messages/${conversation.application_id}`)}
                 className="flex w-full items-center gap-3 rounded-2xl border border-surface-border bg-white p-4 text-left"
               >
                 <span className="flex size-11 items-center justify-center rounded-full bg-brand-blue-50 text-sm font-bold text-brand-blue-600">
-                  {conversation.personName[0]}
+                  {conversation.counterpart_name[0]}
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-semibold text-text-primary">{conversation.personName}</span>
-                  <span className="block truncate text-xs text-text-secondary">{conversation.lastMessage}</span>
+                  <span className="block text-sm font-semibold text-text-primary">{conversation.counterpart_name}</span>
+                  <span className="block truncate text-xs text-text-secondary">{conversation.last_message_body}</span>
                 </span>
                 <ChevronRight className="size-4 text-text-tertiary" />
               </button>
             ) : (
-              <p className="py-8 text-center text-sm text-text-tertiary">Aucun message pour cette candidature.</p>
+              <button
+                onClick={() => navigate(`/app/messages/${application.id}`)}
+                className="flex w-full items-center justify-center rounded-2xl border border-dashed border-surface-border bg-white py-8 text-sm font-semibold text-brand-blue-600"
+              >
+                Démarrer une conversation avec le recruteur
+              </button>
             )}
           </div>
         )}
@@ -238,11 +242,9 @@ export function ApplicationDetail() {
         >
           Retirer ma candidature
         </Button>
-        {conversation && (
-          <Button fullWidth onClick={() => navigate(`/app/messages/${conversation.id}`)}>
-            Contacter le recruteur
-          </Button>
-        )}
+        <Button fullWidth onClick={() => navigate(`/app/messages/${application.id}`)}>
+          Contacter le recruteur
+        </Button>
       </div>
     </div>
   )

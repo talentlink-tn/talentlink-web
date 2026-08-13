@@ -95,27 +95,6 @@ export interface Application {
   }
 }
 
-export interface MessageItem {
-  id: string
-  author: 'me' | 'them'
-  text: string
-  time: string
-}
-
-export interface Conversation {
-  id: string
-  companyId?: string
-  personName: string
-  personRole: string
-  avatarColor: string
-  online?: boolean
-  pinned?: boolean
-  unread: number
-  lastMessage: string
-  lastTime: string
-  messages: MessageItem[]
-}
-
 export interface NotificationItem {
   id: string
   category: 'application' | 'message' | 'offer' | 'system'

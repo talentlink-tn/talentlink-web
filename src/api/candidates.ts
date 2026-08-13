@@ -72,28 +72,6 @@ export async function withdrawMyApplication(id: string): Promise<Application> {
   return mapApplicationForCandidate(raw)
 }
 
-export interface NotificationRaw {
-  id: string
-  application_id: string | null
-  type: string
-  title: string
-  body: string
-  is_read: boolean
-  created_at: string
-}
-
-export async function listMyNotifications(): Promise<NotificationRaw[]> {
-  return api.get<NotificationRaw[]>('/candidates/me/notifications')
-}
-
-export async function markNotificationRead(id: string): Promise<NotificationRaw> {
-  return api.post<NotificationRaw>(`/candidates/me/notifications/${id}/read`)
-}
-
-export async function markAllNotificationsRead(): Promise<NotificationRaw[]> {
-  return api.post<NotificationRaw[]>('/candidates/me/notifications/read-all')
-}
-
 // Fetches recommended jobs and registers both the jobs and their
 // companies with the runtime registries (data/jobs.ts, data/companies.ts)
 // so JobCard/JobDetail resolve them via the existing getJob/getCompany

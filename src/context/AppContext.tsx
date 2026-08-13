@@ -1,31 +1,38 @@
 import { createContext, use, useCallback, useEffect, useState, type ReactNode } from 'react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
-import { conversations as seedConversations } from '@/data/messages'
 import {
   applyToJobOffer,
   getMyApplication,
   listMyApplications,
+  withdrawMyApplication,
+} from '@/api/candidates'
+import {
   listMyNotifications,
   markAllNotificationsRead as apiMarkAllNotificationsRead,
   markNotificationRead as apiMarkNotificationRead,
-  withdrawMyApplication,
   type NotificationRaw,
-} from '@/api/candidates'
+} from '@/api/notifications'
+import { listMyConversations, type ConversationSummaryRaw } from '@/api/messages'
 import { loginCandidate, loginCompany, registerCandidate, registerCompany } from '@/api/auth'
 import { clearAuthToken, getAuthToken, type AuthKind } from '@/api/client'
 import { timeAgoFr } from '@/api/enums'
-import type { Application, Conversation, MessageItem, NotificationItem, ProfileType } from '@/types'
+import type { Application, NotificationItem, ProfileType } from '@/types'
 
-function notificationToItem(n: NotificationRaw): NotificationItem {
+function notificationToItem(n: NotificationRaw, isCompany: boolean): NotificationItem {
+  // The recruiter side has no per-application detail route yet (only the
+  // /recruiter/candidates pipeline list — see CandidatesPipeline.tsx),
+  // so a company notification can only deep-link that far, not to the
+  // specific application the way a candidate notification can.
+  const href = n.application_id ? (isCompany ? '/recruiter/candidates' : `/app/applications/${n.application_id}`) : undefined
   return {
     id: n.id,
-    category: 'application',
-    icon: 'bell',
+    category: n.type === 'new_message' ? 'message' : 'application',
+    icon: n.type === 'new_message' ? 'message-circle' : 'bell',
     title: n.title,
     description: n.body,
     time: timeAgoFr(n.created_at),
     read: n.is_read,
-    href: n.application_id ? `/app/applications/${n.application_id}` : undefined,
+    href,
   }
 }
 
@@ -54,9 +61,9 @@ interface AppContextValue {
   applyToJob: (jobId: string) => Promise<Application>
   withdrawApplication: (applicationId: string) => Promise<void>
 
-  conversations: Conversation[]
-  sendMessage: (conversationId: string, text: string) => void
-  markConversationRead: (conversationId: string) => void
+  conversations: ConversationSummaryRaw[]
+  conversationsLoading: boolean
+  refreshConversations: () => Promise<void>
   unreadMessagesCount: number
 
   notifications: NotificationItem[]
@@ -83,7 +90,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const [applications, setApplications] = useState<Application[]>([])
   const [applicationsLoading, setApplicationsLoading] = useState(false)
-  const [conversations, setConversations] = useState<Conversation[]>(seedConversations)
+  const [conversations, setConversations] = useState<ConversationSummaryRaw[]>([])
+  const [conversationsLoading, setConversationsLoading] = useState(false)
   const [notifications, setNotifications] = useState<NotificationItem[]>([])
   const [toast, setToast] = useState<string | null>(null)
 
@@ -110,21 +118,36 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [authKind])
 
   const refreshNotifications = useCallback(async () => {
-    if (authKind !== 'candidate') return
+    if (authKind !== 'candidate' && authKind !== 'company') return
     try {
       const raw = await listMyNotifications()
-      setNotifications(raw.map(notificationToItem))
+      setNotifications(raw.map((n) => notificationToItem(n, authKind === 'company')))
     } catch {
       // ignore — notifications are non-critical, next refresh will retry
+    }
+  }, [authKind])
+
+  const refreshConversations = useCallback(async () => {
+    if (authKind !== 'candidate' && authKind !== 'company') return
+    setConversationsLoading(true)
+    try {
+      setConversations(await listMyConversations())
+    } catch {
+      // Same non-critical-list philosophy as refreshApplications above.
+    } finally {
+      setConversationsLoading(false)
     }
   }, [authKind])
 
   useEffect(() => {
     if (authKind === 'candidate') {
       void refreshApplications()
-      void refreshNotifications()
     }
-  }, [authKind, refreshApplications, refreshNotifications])
+    if (authKind === 'candidate' || authKind === 'company') {
+      void refreshNotifications()
+      void refreshConversations()
+    }
+  }, [authKind, refreshApplications, refreshNotifications, refreshConversations])
 
   const value: AppContextValue = {
     onboardingSeen,
@@ -176,6 +199,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setAuthKind(null)
       setApplications([])
       setNotifications([])
+      setConversations([])
     },
 
     favorites,
@@ -202,34 +226,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
     },
 
     conversations,
-    sendMessage: (conversationId, text) => {
-      const message: MessageItem = {
-        id: `msg-${Date.now()}`,
-        author: 'me',
-        text,
-        time: 'À l’instant',
-      }
-      setConversations((current) =>
-        current.map((c) =>
-          c.id === conversationId
-            ? { ...c, messages: [...c.messages, message], lastMessage: text, lastTime: 'À l’instant' }
-            : c,
-        ),
-      )
-    },
-    markConversationRead: (conversationId) =>
-      setConversations((current) => current.map((c) => (c.id === conversationId ? { ...c, unread: 0 } : c))),
-    unreadMessagesCount: conversations.reduce((sum, c) => sum + c.unread, 0),
+    conversationsLoading,
+    refreshConversations,
+    unreadMessagesCount: conversations.reduce((sum, c) => sum + c.unread_count, 0),
 
     notifications,
     refreshNotifications,
     markNotificationRead: (id) => {
       setNotifications((current) => current.map((n) => (n.id === id ? { ...n, read: true } : n)))
-      if (authKind === 'candidate') void apiMarkNotificationRead(id)
+      if (authKind === 'candidate' || authKind === 'company') void apiMarkNotificationRead(id)
     },
     markAllNotificationsRead: () => {
       setNotifications((current) => current.map((n) => ({ ...n, read: true })))
-      if (authKind === 'candidate') void apiMarkAllNotificationsRead()
+      if (authKind === 'candidate' || authKind === 'company') void apiMarkAllNotificationsRead()
     },
     unreadNotificationsCount: notifications.filter((n) => !n.read).length,
 
