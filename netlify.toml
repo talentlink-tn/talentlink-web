@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# react-router's BrowserRouter needs every path to fall through to
+# index.html so client-side routing can take over — without this, a
+# deep link (e.g. /app/jobs) or a page refresh 404s, since Netlify's
+# static host otherwise looks for a literal /app/jobs file on disk.
+# Netlify-equivalent of vercel.json's rewrite (see that file — it does
+# nothing on Netlify, hence this separate config).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
