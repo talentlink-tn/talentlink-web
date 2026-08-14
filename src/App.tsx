@@ -43,6 +43,12 @@ import { Statistics } from '@/pages/recruiter/Statistics'
 import { CareerPage } from '@/pages/public/CareerPage'
 import { PublicJobDetail } from '@/pages/public/PublicJobDetail'
 
+import { AdminShell } from '@/layouts/AdminShell'
+import { AdminLogin } from '@/pages/admin/AdminLogin'
+import { AdminDashboard } from '@/pages/admin/AdminDashboard'
+import { AdminCompanies } from '@/pages/admin/AdminCompanies'
+import { AdminJobOffers } from '@/pages/admin/AdminJobOffers'
+
 function HomeDashboard() {
   const { profileType } = useApp()
   return profileType === 'employee' ? <EmployeeDashboard /> : <Dashboard />
@@ -97,6 +103,16 @@ function AppRoutes() {
         <Route path="notifications" element={<Notifications />} />
         <Route path="profile" element={<Profile />} />
         <Route path="settings" element={<Settings />} />
+      </Route>
+
+      {/* Deliberately unlisted — not a tab on the public Login.tsx, no
+          link to it anywhere a normal visitor would see. See
+          AdminShell.tsx / AdminLogin.tsx for the rest of the reasoning. */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin" element={<AdminShell />}>
+        <Route index element={<AdminDashboard />} />
+        <Route path="companies" element={<AdminCompanies />} />
+        <Route path="job-offers" element={<AdminJobOffers />} />
       </Route>
     </Routes>
   )

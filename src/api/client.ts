@@ -17,7 +17,7 @@ export function resolveUploadUrl(path: string): string {
   return `${API_ORIGIN}${path}`
 }
 
-export type AuthKind = 'company' | 'candidate'
+export type AuthKind = 'company' | 'candidate' | 'admin'
 
 const TOKEN_STORAGE_KEY = 'tl_auth_token'
 
