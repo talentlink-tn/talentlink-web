@@ -43,16 +43,14 @@ export function PublicJobDetail() {
     <div className="min-h-dvh bg-surface-muted">
       <header className="sticky top-0 z-30 border-b border-surface-border bg-white/95 px-4 py-3 backdrop-blur lg:px-8">
         <div className="mx-auto flex w-full max-w-4xl items-center justify-between">
-          <Link to="/">
-            <Logo size={28} textClassName="text-[15px]" />
-          </Link>
-          <Link to="/login" className="text-sm font-semibold text-brand-blue-600">
+          <Logo size={32} textClassName="text-[16px]" to="/" />
+          <Link to="/login" className="text-sm font-semibold text-brand-blue-600 transition-colors hover:text-brand-blue-700">
             Se connecter
           </Link>
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-4xl px-4 py-8 lg:px-8">
+      <main className="animate-fade-in mx-auto w-full max-w-4xl px-4 py-8 lg:px-8">
         {loading && <p className="py-12 text-center text-sm text-text-tertiary">Chargement…</p>}
 
         {job && (

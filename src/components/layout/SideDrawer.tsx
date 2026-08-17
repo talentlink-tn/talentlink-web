@@ -74,13 +74,19 @@ export function SideDrawer({ open, onClose }: { open: boolean; onClose: () => vo
             className="relative z-10 flex h-full w-[85%] max-w-[300px] flex-col bg-white p-5 pt-[max(1.25rem,env(safe-area-inset-top))] shadow-2xl"
           >
             <div className="mb-6 flex items-center justify-between">
-              <Logo size={30} textClassName="text-[16px]" />
+              <button
+                onClick={() => go('/app')}
+                className="inline-flex items-center transition-opacity duration-150 hover:opacity-75 active:opacity-60"
+                aria-label="Retour à l'accueil"
+              >
+                <Logo size={34} textClassName="text-[17px]" />
+              </button>
               <button onClick={onClose} className="flex size-8 items-center justify-center rounded-full text-text-secondary hover:bg-surface-muted" aria-label="Fermer">
                 <X className="size-4" />
               </button>
             </div>
 
-            <button onClick={() => go('/app/profile')} className="mb-5 flex items-center gap-3 rounded-2xl bg-surface-muted p-3 text-left">
+            <button onClick={() => go('/app/profile')} className="mb-5 flex items-center gap-3 rounded-2xl bg-surface-muted p-3 text-left hover:bg-brand-blue-50">
               <Avatar name={displayName} src={avatarUrl} size={44} />
               <span className="min-w-0">
                 <span className="block truncate text-sm font-semibold text-text-primary">{displayName}</span>

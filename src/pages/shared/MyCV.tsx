@@ -121,7 +121,7 @@ export function MyCV() {
         <h3 className="px-4 pt-4 pb-2 text-sm font-bold text-text-primary">Contenu de mon CV</h3>
         {sections.map((s) => (
           <div key={s.key} className="border-t border-surface-border">
-            <button onClick={() => setOpenSection(openSection === s.key ? null : s.key)} className="flex w-full items-center gap-3 px-4 py-3.5 text-left">
+            <button onClick={() => setOpenSection(openSection === s.key ? null : s.key)} className="flex w-full items-center gap-3 px-4 py-3.5 text-left hover:bg-surface-muted">
               <span className="flex-1 text-sm font-medium text-text-primary">
                 {s.label} <span className="text-text-tertiary">({s.count})</span>
               </span>

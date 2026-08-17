@@ -158,7 +158,7 @@ export function Onboarding() {
   return (
     <div className="flex min-h-dvh w-full bg-white">
       <AuthBrandPanel />
-      <div className="mx-auto flex w-full max-w-[480px] flex-1 flex-col px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <div className="animate-fade-in mx-auto flex w-full max-w-[480px] flex-1 flex-col px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
       <div className="flex items-center justify-between">
         <div className="flex gap-1.5">
           {slides.map((_, i) => (

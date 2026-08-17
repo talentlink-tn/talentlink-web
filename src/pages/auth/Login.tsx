@@ -47,7 +47,7 @@ export function Login() {
   return (
     <div className="flex min-h-dvh w-full bg-white">
       <AuthBrandPanel />
-      <div className="mx-auto flex w-full max-w-[480px] flex-1 flex-col px-6 pt-[max(2.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] lg:justify-center lg:py-12">
+      <div className="animate-fade-in mx-auto flex w-full max-w-[480px] flex-1 flex-col px-6 pt-[max(2.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] lg:justify-center lg:py-12">
       <div className="flex flex-col items-center text-center">
         <Logo size={70} withText={false} />
         <h1 className="mt-4 text-2xl font-extrabold text-text-primary">

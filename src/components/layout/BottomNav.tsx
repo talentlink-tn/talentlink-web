@@ -40,8 +40,8 @@ export function BottomNav() {
           end={item.to === '/app'}
           className={({ isActive }) =>
             cn(
-              'relative flex flex-1 flex-col items-center gap-0.5 rounded-xl px-1 py-1.5 text-[11px] font-medium transition-colors',
-              isActive ? 'text-brand-blue-600' : 'text-text-tertiary hover:text-text-secondary',
+              'relative flex flex-1 flex-col items-center gap-0.5 rounded-xl px-1 py-1.5 text-[11px] font-medium',
+              isActive ? 'font-semibold text-brand-blue-600' : 'text-text-tertiary hover:text-text-secondary',
             )
           }
         >

@@ -53,7 +53,7 @@ export function Dashboard() {
 
       <button
         onClick={() => navigate('/app/jobs')}
-        className="mt-4 flex h-12 w-full items-center gap-2.5 rounded-xl border border-surface-border bg-white px-4 text-left text-sm text-text-tertiary lg:max-w-xl"
+        className="mt-4 flex h-12 w-full items-center gap-2.5 rounded-xl border border-surface-border bg-white px-4 text-left text-sm text-text-tertiary transition-all duration-150 hover:border-brand-blue-200 hover:shadow-sm lg:max-w-xl"
       >
         <Search className="size-[18px]" />
         <span className="flex-1">Rechercher un emploi, une compétence, une entreprise…</span>
@@ -102,7 +102,11 @@ export function Dashboard() {
               const c = getCompany(id)
               if (!c) return null
               return (
-                <button key={id} onClick={() => navigate(`/app/companies/${id}`)} className="shrink-0">
+                <button
+                  key={id}
+                  onClick={() => navigate(`/app/companies/${id}`)}
+                  className="shrink-0 transition-transform duration-150 hover:-translate-y-0.5 active:scale-95"
+                >
                   <CompanyLogo name={c.logo} color={c.logoColor} size={64} />
                 </button>
               )

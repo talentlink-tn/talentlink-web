@@ -115,7 +115,7 @@ export function ChooseProfile() {
   }
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col bg-white px-6 pt-[max(2rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+    <div className="animate-fade-in mx-auto flex min-h-dvh w-full max-w-[480px] flex-col bg-white px-6 pt-[max(2rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
       <div className="flex flex-col items-center text-center">
         <div className="flex size-16 items-center justify-center rounded-2xl bg-ink-950">
           <img src="/icons/icon-192.png" alt="" className="size-10 rounded-xl" />

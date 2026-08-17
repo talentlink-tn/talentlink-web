@@ -17,7 +17,7 @@ export function JobCard({ job, dense }: { job: Job; dense?: boolean }) {
   return (
     <button
       onClick={() => navigate(`/app/jobs/${job.id}`)}
-      className="flex w-full items-start gap-3 rounded-2xl border border-surface-border bg-white p-4 text-left transition-shadow hover:shadow-md active:scale-[0.99]"
+      className="flex w-full items-start gap-3 rounded-2xl border border-surface-border bg-white p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-md active:translate-y-0 active:scale-[0.99]"
     >
       <CompanyLogo name={company?.logo ?? '?'} color={company?.logoColor ?? '#2F6FED'} size={dense ? 44 : 52} />
       <span className="min-w-0 flex-1">

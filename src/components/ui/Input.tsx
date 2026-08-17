@@ -26,7 +26,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             type={isPassword ? (show ? 'text' : 'password') : type}
             className={cn(
               'h-12 w-full rounded-xl border bg-white text-[15px] text-text-primary placeholder:text-text-tertiary',
-              'transition-colors focus:border-brand-blue-500 focus:ring-4 focus:ring-brand-blue-500/10 focus:outline-none',
+              'transition-all duration-150 focus:border-brand-blue-500 focus:ring-4 focus:ring-brand-blue-500/10 focus:outline-none',
               icon ? 'pl-11' : 'pl-4',
               isPassword ? 'pr-11' : 'pr-4',
               error ? 'border-red-300' : 'border-surface-border',

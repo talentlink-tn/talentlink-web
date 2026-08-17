@@ -41,7 +41,7 @@ export function RecruiterSidebar() {
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-surface-border bg-white lg:flex">
       <div className="flex items-center justify-between px-5 py-5">
-        <Logo size={30} textClassName="text-[16px]" />
+        <Logo size={34} textClassName="text-[17px]" to="/recruiter" />
         <button
           onClick={() => navigate('/recruiter/notifications')}
           className="relative flex size-8 items-center justify-center rounded-full text-text-secondary hover:bg-surface-muted"
@@ -71,8 +71,8 @@ export function RecruiterSidebar() {
             end={l.to === '/recruiter'}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
-                isActive ? 'bg-brand-blue-50 text-brand-blue-600' : 'text-text-secondary hover:bg-surface-muted hover:text-text-primary',
+                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium',
+                isActive ? 'bg-brand-blue-50 font-semibold text-brand-blue-600 shadow-sm shadow-brand-blue-500/10' : 'text-text-secondary hover:bg-surface-muted hover:text-text-primary',
               )
             }
           >
@@ -88,7 +88,7 @@ export function RecruiterSidebar() {
           className={({ isActive }) =>
             cn(
               'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium',
-              isActive ? 'bg-brand-blue-50 text-brand-blue-600' : 'text-text-secondary hover:bg-surface-muted',
+              isActive ? 'bg-brand-blue-50 font-semibold text-brand-blue-600 shadow-sm shadow-brand-blue-500/10' : 'text-text-secondary hover:bg-surface-muted',
             )
           }
         >

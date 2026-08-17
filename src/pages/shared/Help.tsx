@@ -42,7 +42,7 @@ export function Help() {
       <div className="divide-y divide-surface-border overflow-hidden rounded-2xl border border-surface-border bg-white">
         {filtered.map((f, i) => (
           <div key={f.q}>
-            <button onClick={() => setOpenIndex(openIndex === i ? null : i)} className="flex w-full items-center gap-3 px-4 py-3.5 text-left">
+            <button onClick={() => setOpenIndex(openIndex === i ? null : i)} className="flex w-full items-center gap-3 px-4 py-3.5 text-left hover:bg-surface-muted">
               <span className="flex-1 text-sm font-medium text-text-primary">{f.q}</span>
               <ChevronDown className={cn('size-4 shrink-0 text-text-tertiary transition-transform', openIndex === i && 'rotate-180')} />
             </button>

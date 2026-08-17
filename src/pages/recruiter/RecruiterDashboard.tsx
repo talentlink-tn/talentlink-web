@@ -63,7 +63,7 @@ export function RecruiterDashboard() {
               <button
                 key={c.id}
                 onClick={() => navigate('/recruiter/candidates')}
-                className="flex w-full items-center gap-3 rounded-2xl border border-surface-border bg-white p-3.5 text-left"
+                className="flex w-full items-center gap-3 rounded-2xl border border-surface-border bg-white p-3.5 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-md"
               >
                 <Avatar name={c.name} color={c.avatarColor} size={44} />
                 <span className="min-w-0 flex-1">

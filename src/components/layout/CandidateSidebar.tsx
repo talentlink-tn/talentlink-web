@@ -42,7 +42,7 @@ export function CandidateSidebar() {
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-surface-border bg-white lg:flex">
       <div className="flex items-center justify-between px-5 py-5">
-        <Logo size={30} textClassName="text-[16px]" />
+        <Logo size={34} textClassName="text-[17px]" to="/app" />
         <button
           onClick={() => navigate('/app/notifications')}
           className="relative flex size-8 items-center justify-center rounded-full text-text-secondary hover:bg-surface-muted"
@@ -58,7 +58,7 @@ export function CandidateSidebar() {
 
       <button
         onClick={() => navigate('/app/profile')}
-        className="mx-4 mb-4 flex items-center gap-3 rounded-2xl bg-surface-muted p-3 text-left"
+        className="mx-4 mb-4 flex items-center gap-3 rounded-2xl bg-surface-muted p-3 text-left hover:bg-brand-blue-50"
       >
         <Avatar name={displayName} src={avatarUrl} size={40} />
         <span className="min-w-0">
@@ -75,8 +75,8 @@ export function CandidateSidebar() {
             end={l.to === '/app'}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
-                isActive ? 'bg-brand-blue-50 text-brand-blue-600' : 'text-text-secondary hover:bg-surface-muted hover:text-text-primary',
+                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium',
+                isActive ? 'bg-brand-blue-50 font-semibold text-brand-blue-600 shadow-sm shadow-brand-blue-500/10' : 'text-text-secondary hover:bg-surface-muted hover:text-text-primary',
               )
             }
           >

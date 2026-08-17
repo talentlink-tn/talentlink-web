@@ -88,7 +88,7 @@ export function ApplicationDetail() {
         {(application.status === 'interview' || application.status === 'technical_test') && (
           <button
             onClick={() => navigate(`/app/applications/${application.id}/interview`)}
-            className="mt-3 flex w-full items-center gap-3 rounded-2xl border border-surface-border bg-white p-4 text-left"
+            className="mt-3 flex w-full items-center gap-3 rounded-2xl border border-surface-border bg-white p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-sm"
           >
             <Calendar className="size-5 shrink-0 text-brand-blue-600" />
             <span className="min-w-0 flex-1">
@@ -166,7 +166,7 @@ export function ApplicationDetail() {
             {conversation ? (
               <button
                 onClick={() => navigate(`/app/messages/${conversation.application_id}`)}
-                className="flex w-full items-center gap-3 rounded-2xl border border-surface-border bg-white p-4 text-left"
+                className="flex w-full items-center gap-3 rounded-2xl border border-surface-border bg-white p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-sm"
               >
                 <span className="flex size-11 items-center justify-center rounded-full bg-brand-blue-50 text-sm font-bold text-brand-blue-600">
                   {conversation.counterpart_name[0]}

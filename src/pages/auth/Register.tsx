@@ -43,7 +43,7 @@ export function Register() {
   return (
     <div className="flex min-h-dvh w-full bg-white">
       <AuthBrandPanel tagline="Rejoignez des milliers de talents et d’entreprises déjà connectés." />
-      <div className="mx-auto flex w-full max-w-[480px] flex-1 flex-col px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] lg:justify-center lg:py-12">
+      <div className="animate-fade-in mx-auto flex w-full max-w-[480px] flex-1 flex-col px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] lg:justify-center lg:py-12">
       <button onClick={() => navigate(-1)} className="flex size-9 items-center justify-center rounded-full text-text-primary hover:bg-surface-muted lg:hidden" aria-label="Retour">
         <ChevronLeft className="size-5" />
       </button>

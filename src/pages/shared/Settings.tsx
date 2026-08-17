@@ -131,7 +131,7 @@ function Row({
   danger?: boolean
 }) {
   return (
-    <button onClick={onClick} className="flex w-full items-center gap-3 px-4 py-3.5 text-left">
+    <button onClick={onClick} className="flex w-full items-center gap-3 px-4 py-3.5 text-left hover:bg-surface-muted">
       <span className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${danger ? 'bg-red-50 text-red-500' : 'bg-brand-blue-50 text-brand-blue-600'}`}>
         <Icon className="size-4" />
       </span>

@@ -20,7 +20,7 @@ export function RecruiterShell() {
       <RecruiterSidebar />
       <div className="flex min-h-dvh flex-1 flex-col">
         <header className="sticky top-0 z-30 flex items-center justify-between border-b border-surface-border bg-white/95 px-4 py-3 backdrop-blur lg:hidden">
-          <Logo size={28} textClassName="text-[16px]" />
+          <Logo size={32} textClassName="text-[17px]" to="/recruiter" />
           <button onClick={() => navigate('/recruiter/notifications')} className="relative flex size-9 items-center justify-center rounded-full text-text-primary hover:bg-surface-muted">
             <Bell className="size-5" />
             {unreadNotificationsCount > 0 && (

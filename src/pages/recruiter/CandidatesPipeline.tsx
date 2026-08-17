@@ -140,7 +140,7 @@ export function CandidatesPipeline() {
                   <button
                     key={c.id}
                     onClick={() => openCandidate(c)}
-                    className="flex w-full items-center gap-2.5 rounded-xl border border-surface-border bg-surface-muted/40 p-3 text-left hover:bg-surface-muted"
+                    className="flex w-full items-center gap-2.5 rounded-xl border border-surface-border bg-surface-muted/40 p-3 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:bg-white hover:shadow-sm"
                   >
                     <Avatar name={c.name} color={c.avatarColor} size={38} />
                     <span className="min-w-0 flex-1">

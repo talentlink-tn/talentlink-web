@@ -15,7 +15,7 @@ export function ApplicationCard({ application, basePath = '/app/applications' }:
   return (
     <button
       onClick={() => navigate(`${basePath}/${application.id}`)}
-      className="flex w-full items-start gap-3 rounded-2xl border border-surface-border bg-white p-4 text-left transition-shadow hover:shadow-md"
+      className="flex w-full items-start gap-3 rounded-2xl border border-surface-border bg-white p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-md active:translate-y-0 active:scale-[0.99]"
     >
       <CompanyLogo name={company?.logo ?? '?'} color={company?.logoColor ?? '#2F6FED'} size={48} />
       <span className="min-w-0 flex-1">

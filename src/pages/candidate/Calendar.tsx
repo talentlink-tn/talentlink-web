@@ -125,7 +125,7 @@ export function Calendar() {
                 <button
                   key={e.iv.id}
                   onClick={() => navigate('/app/applications')}
-                  className="flex w-full items-center gap-3 rounded-xl border border-surface-border bg-white p-3.5 text-left"
+                  className="flex w-full items-center gap-3 rounded-xl border border-surface-border bg-white p-3.5 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-sm"
                 >
                   <span className={cn('flex size-10 shrink-0 items-center justify-center rounded-xl', formatTone[e.iv.format])}>
                     <Icon className="size-[18px]" />

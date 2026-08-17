@@ -12,7 +12,7 @@ export function PublicJobCard({ job }: { job: Job }) {
   return (
     <Link
       to={`/jobs/${job.publicSlug}`}
-      className="flex w-full flex-col gap-2 rounded-2xl border border-surface-border bg-white p-4 text-left transition-shadow hover:shadow-md"
+      className="flex w-full flex-col gap-2 rounded-2xl border border-surface-border bg-white p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-2">
         <span className="min-w-0">

@@ -50,7 +50,7 @@ export function EmployeeDocuments() {
             <button
               key={doc.name}
               onClick={() => showToast('Téléchargement démarré…')}
-              className="flex w-full items-center gap-3 rounded-2xl border border-surface-border bg-white p-3.5 text-left"
+              className="flex w-full items-center gap-3 rounded-2xl border border-surface-border bg-white p-3.5 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-sm"
             >
               <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-500">
                 <FileText className="size-[18px]" />

@@ -25,7 +25,7 @@ export function EmployeeDashboard() {
 
       <div className="mt-5 space-y-2.5">
         {quickLinks.map((l) => (
-          <button key={l.label} onClick={() => navigate(l.to)} className="flex w-full items-center gap-3 rounded-2xl border border-surface-border bg-white p-4 text-left">
+          <button key={l.label} onClick={() => navigate(l.to)} className="flex w-full items-center gap-3 rounded-2xl border border-surface-border bg-white p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-sm">
             <span className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${l.tone}`}>
               <l.icon className="size-[18px]" />
             </span>

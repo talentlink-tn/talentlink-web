@@ -103,6 +103,19 @@
     background: var(--color-brand-blue-100);
   }
 
+  /* Baseline smooth transition for every interactive element — most
+     hover: state changes across the app (color/bg swaps on links, nav
+     items, list rows) were never paired with an explicit `transition`
+     class, so they snapped instantly instead of animating. This is
+     purely additive: elements with no hover state change are unaffected,
+     nothing to animate. Individual components still opt into richer
+     transitions (transform, shadow) via their own classes. */
+  a, button, [role='button'], [role='tab'] {
+    transition-property: color, background-color, border-color, opacity, box-shadow;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
   /* Slim, unobtrusive scrollbars for the app shell */
   ::-webkit-scrollbar {
     width: 6px;

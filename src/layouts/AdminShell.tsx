@@ -27,7 +27,7 @@ export function AdminShell() {
     <div className="flex min-h-dvh w-full bg-surface-muted">
       <aside className="hidden w-64 shrink-0 flex-col border-r border-surface-border bg-ink-950 lg:flex">
         <div className="flex items-center gap-2 px-5 py-5">
-          <Logo size={28} textClassName="text-[16px]" dark />
+          <Logo size={32} textClassName="text-[17px]" dark to="/admin" />
         </div>
         <div className="mx-4 mb-4 flex items-center gap-2 rounded-2xl bg-white/5 p-3 text-white/70">
           <ShieldAlert className="size-4 shrink-0 text-orange-400" />
@@ -42,8 +42,8 @@ export function AdminShell() {
               end={l.to === '/admin'}
               className={({ isActive }) =>
                 cn(
-                  'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
-                  isActive ? 'bg-white/10 text-white' : 'text-white/60 hover:bg-white/5 hover:text-white',
+                  'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium',
+                  isActive ? 'bg-white/10 font-semibold text-white ring-1 ring-white/10' : 'text-white/60 hover:bg-white/5 hover:text-white',
                 )
               }
             >
@@ -77,7 +77,7 @@ export function AdminShell() {
               className={({ isActive }) =>
                 cn(
                   'shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold',
-                  isActive ? 'bg-brand-blue-600 text-white' : 'text-text-secondary',
+                  isActive ? 'bg-brand-blue-600 text-white shadow-sm shadow-brand-blue-500/30' : 'text-text-secondary hover:bg-surface-muted',
                 )
               }
             >

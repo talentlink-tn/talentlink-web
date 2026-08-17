@@ -20,7 +20,7 @@ export function TopHeader() {
         >
           <Menu className="size-5" />
         </button>
-        <Logo size={30} textClassName="text-[17px]" />
+        <Logo size={34} textClassName="text-[18px]" to="/app" />
         <button
           onClick={() => navigate('/app/notifications')}
           className="relative flex size-9 items-center justify-center rounded-full text-text-primary hover:bg-surface-muted"
