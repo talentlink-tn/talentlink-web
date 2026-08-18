@@ -3,20 +3,23 @@
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  /* Brand palette — extracted from Talent Link mockups */
+  /* Brand palette — extracted from Talent Link mockups, saturation
+     boosted (Aug 2026 pass) for more visual punch. 500/600 shades were
+     tuned against WCAG contrast, not just hue/saturation — see the
+     white-text/contrast notes in the design-pass writeup. */
   --color-brand-blue-50: #eef4ff;
   --color-brand-blue-100: #dbe7fe;
-  --color-brand-blue-400: #4f8cf7;
-  --color-brand-blue-500: #2f6fed;
-  --color-brand-blue-600: #1e56d6;
-  --color-brand-blue-700: #1a45ab;
+  --color-brand-blue-400: #417ffb;
+  --color-brand-blue-500: #0a58ff;
+  --color-brand-blue-600: #0043e0;
+  --color-brand-blue-700: #0037b8;
 
-  --color-brand-teal-400: #22c1c3;
-  --color-brand-teal-500: #14b8a6;
+  --color-brand-teal-400: #12d9d2;
+  --color-brand-teal-500: #089b8c;
 
-  --color-brand-green-400: #4ade80;
-  --color-brand-green-500: #22c55e;
-  --color-brand-green-600: #16a34a;
+  --color-brand-green-400: #22f16e;
+  --color-brand-green-500: #078836;
+  --color-brand-green-600: #03772e;
 
   --color-ink-950: #05060a;
   --color-ink-900: #0a0e17;
