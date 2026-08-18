@@ -3,10 +3,12 @@ import logoMark from '@/assets/logo-mark.svg'
 import { cn } from '@/utils/cn'
 
 // logo-mark.svg's viewBox is cropped tight to its visible ink (see that
-// file) — 186 wide by 168 tall, not square, so the rendered <img> needs
-// the matching ratio or it re-introduces the lopsided empty-space-below
-// problem the crop was done to fix in the first place.
-const LOGO_ASPECT = 168 / 186
+// file), computed by rasterizing the mark and scanning for the true
+// non-transparent pixel bounding box rather than eyeballing a screenshot
+// — an earlier eyeballed crop clipped real content on both sides
+// (worse on the right, cutting into the loop). 229.9 wide by 155.9
+// tall, not square, so the rendered <img> needs the matching ratio.
+const LOGO_ASPECT = 155.9 / 229.9
 
 export function Logo({
   size = 40,
