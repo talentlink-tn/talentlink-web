@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Plus, Users, Eye, XCircle, Archive, RotateCcw } from 'lucide-react'
+import { Plus, Users, Eye, XCircle, Archive, RotateCcw, Pencil } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Sheet } from '@/components/ui/Sheet'
@@ -11,9 +11,11 @@ import {
   archiveJobOffer,
   closeJobOffer,
   createJobOffer,
+  getMyJobOffer,
   listMyJobOffers,
   publishJobOffer,
   restoreJobOffer,
+  updateJobOffer,
   type JobOfferReadRaw,
 } from '@/api/jobOffers'
 import type { BackendContractType, BackendExperienceLevel } from '@/api/enums'
@@ -53,12 +55,14 @@ export function JobsManagement() {
   const navigate = useNavigate()
   const { showToast } = useApp()
   const [sheetOpen, setSheetOpen] = useState(false)
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState('Tunis, Tunisie')
   const [contract, setContract] = useState<BackendContractType>('cdi')
   const [experienceLevel, setExperienceLevel] = useState<BackendExperienceLevel>('confirmed')
-  const [publishing, setPublishing] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [loadingOfferToEdit, setLoadingOfferToEdit] = useState(false)
 
   const [jobs, setJobs] = useState<ListItem[]>([])
   const [loading, setLoading] = useState(true)
@@ -75,31 +79,81 @@ export function JobsManagement() {
 
   useEffect(load, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const publish = async () => {
+  const resetForm = () => {
+    setTitle('')
+    setDescription('')
+    setLocation('Tunis, Tunisie')
+    setContract('cdi')
+    setExperienceLevel('confirmed')
+  }
+
+  const openCreateSheet = () => {
+    setEditingId(null)
+    resetForm()
+    setSheetOpen(true)
+  }
+
+  // The list only carries summary fields (title/location/contract/status)
+  // to keep that response light — fetch the full offer for the fields
+  // this form needs (description, experience level) before pre-filling.
+  const openEditSheet = async (id: string) => {
+    setLoadingOfferToEdit(true)
+    try {
+      const offer = await getMyJobOffer(id)
+      setTitle(offer.title)
+      setDescription(offer.description ?? '')
+      setLocation(offer.location)
+      setContract(offer.contract_type)
+      setExperienceLevel(offer.experience_level)
+      setEditingId(id)
+      setSheetOpen(true)
+    } catch (error) {
+      showToast(error instanceof ApiError ? error.message : "Impossible de charger l'offre.")
+    } finally {
+      setLoadingOfferToEdit(false)
+    }
+  }
+
+  const closeSheet = () => {
+    setSheetOpen(false)
+    setEditingId(null)
+  }
+
+  const handleSubmit = async () => {
     if (!title.trim() || !description.trim()) {
       showToast('Veuillez indiquer un titre et une description.')
       return
     }
-    setPublishing(true)
+    setSubmitting(true)
     try {
-      const created = await createJobOffer({
-        title: title.trim(),
-        description: description.trim(),
-        experienceLevel,
-        contractType: contract,
-        workMode: 'on_site',
-        location,
-      })
-      await publishJobOffer(created.id)
-      setSheetOpen(false)
-      setTitle('')
-      setDescription('')
-      showToast('Offre publiée avec succès !')
+      if (editingId) {
+        await updateJobOffer(editingId, {
+          title: title.trim(),
+          description: description.trim(),
+          experienceLevel,
+          contractType: contract,
+          location,
+        })
+        showToast('Offre mise à jour avec succès !')
+      } else {
+        const created = await createJobOffer({
+          title: title.trim(),
+          description: description.trim(),
+          experienceLevel,
+          contractType: contract,
+          workMode: 'on_site',
+          location,
+        })
+        await publishJobOffer(created.id)
+        showToast('Offre publiée avec succès !')
+      }
+      closeSheet()
+      resetForm()
       load()
     } catch (error) {
-      showToast(error instanceof ApiError ? error.message : "Impossible de publier l'offre.")
+      showToast(error instanceof ApiError ? error.message : "Une erreur est survenue.")
     } finally {
-      setPublishing(false)
+      setSubmitting(false)
     }
   }
 
@@ -140,7 +194,7 @@ export function JobsManagement() {
           <h1 className="text-xl font-extrabold text-text-primary">Gestion des offres</h1>
           <p className="text-sm text-text-secondary">{loading ? 'Chargement…' : `${jobs.length} offres`}</p>
         </div>
-        <Button onClick={() => setSheetOpen(true)}>
+        <Button onClick={openCreateSheet}>
           <Plus className="size-[18px]" />
           Publier une offre
         </Button>
@@ -165,6 +219,14 @@ export function JobsManagement() {
               >
                 <Users className="size-3.5" />
                 Candidatures
+              </button>
+              <button
+                onClick={() => openEditSheet(j.id)}
+                disabled={loadingOfferToEdit}
+                className="flex size-8 items-center justify-center rounded-lg border border-surface-border text-text-secondary hover:bg-surface-muted disabled:opacity-40"
+                title="Modifier"
+              >
+                <Pencil className="size-3.5" />
               </button>
               <button onClick={() => showToast('Aperçu de l’offre')} className="flex size-8 items-center justify-center rounded-lg border border-surface-border text-text-secondary hover:bg-surface-muted">
                 <Eye className="size-3.5" />
@@ -201,7 +263,7 @@ export function JobsManagement() {
         ))}
       </div>
 
-      <Sheet open={sheetOpen} onClose={() => setSheetOpen(false)} title="Publier une nouvelle offre">
+      <Sheet open={sheetOpen} onClose={closeSheet} title={editingId ? "Modifier l'offre" : 'Publier une nouvelle offre'}>
         <div className="space-y-4">
           <Input label="Titre du poste" placeholder="Ex. Développeur Full Stack" value={title} onChange={(e) => setTitle(e.target.value)} />
           <label className="block">
@@ -243,8 +305,8 @@ export function JobsManagement() {
               ))}
             </select>
           </label>
-          <Button fullWidth onClick={publish} loading={publishing}>
-            Publier l'offre
+          <Button fullWidth onClick={handleSubmit} loading={submitting}>
+            {editingId ? 'Enregistrer les modifications' : "Publier l'offre"}
           </Button>
         </div>
       </Sheet>
