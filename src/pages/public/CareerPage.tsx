@@ -5,6 +5,7 @@ import { Logo } from '@/components/layout/Logo'
 import { CompanyLogo } from '@/components/shared/CompanyLogo'
 import { PublicJobCard } from '@/components/shared/PublicJobCard'
 import { getPublicCompany, listPublicJobOffers } from '@/api/publicApi'
+import { resolveUploadUrl } from '@/api/client'
 import type { Company, Job } from '@/types'
 
 // A company's public, unauthenticated career page — GET
@@ -63,7 +64,13 @@ export function CareerPage() {
           <>
             <div className="rounded-3xl border border-surface-border bg-white p-6 lg:p-10">
               <div className="flex flex-col items-start gap-5 lg:flex-row lg:items-center">
-                <CompanyLogo name={company.logo} color={company.logoColor} size={80} className="rounded-2xl text-2xl" />
+                <CompanyLogo
+                  name={company.logo}
+                  color={company.logoColor}
+                  src={company.logoUrl ? resolveUploadUrl(company.logoUrl) : undefined}
+                  size={80}
+                  className="rounded-2xl text-2xl"
+                />
                 <div className="min-w-0 flex-1">
                   <h1 className="text-2xl font-extrabold text-text-primary lg:text-3xl">{company.name}</h1>
                   <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-text-secondary">

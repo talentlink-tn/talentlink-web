@@ -1,4 +1,4 @@
-import { api } from './client'
+import { api, postFile } from './client'
 
 export interface CompanyProfileRaw {
   id: string
@@ -20,6 +20,13 @@ export async function updateMyCompany(patch: Partial<{
   brand_color: string
 }>): Promise<CompanyProfileRaw> {
   return api.patch<CompanyProfileRaw>('/companies/me', patch)
+}
+
+// Dedicated multipart upload — logo_url itself stays writable directly
+// via updateMyCompany too (an already-hosted external logo URL), same
+// split as the candidate side's uploadMyPhoto vs. updateMyCandidateProfile.
+export async function uploadMyLogo(file: File): Promise<CompanyProfileRaw> {
+  return postFile<CompanyProfileRaw>('/companies/me/logo', file)
 }
 
 export interface TeamMemberRaw {

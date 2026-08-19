@@ -37,6 +37,7 @@ import { EmployeeDocuments } from '@/pages/employee/EmployeeDocuments'
 
 import { RecruiterDashboard } from '@/pages/recruiter/RecruiterDashboard'
 import { JobsManagement } from '@/pages/recruiter/JobsManagement'
+import { CompanyProfileEdit } from '@/pages/recruiter/CompanyProfileEdit'
 import { CandidatesPipeline } from '@/pages/recruiter/CandidatesPipeline'
 import { Statistics } from '@/pages/recruiter/Statistics'
 
@@ -102,6 +103,7 @@ function AppRoutes() {
         <Route path="messages/:conversationId" element={<Conversation />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="profile/edit" element={<CompanyProfileEdit />} />
         <Route path="settings" element={<Settings />} />
       </Route>
 

@@ -9,6 +9,10 @@ export interface Company {
   name: string
   logo: string
   logoColor: string
+  /** Raw relative upload path (or full external URL) — resolve via
+   * resolveUploadUrl at render time, same convention as candidate
+   * photo_url. Undefined when the company has no uploaded logo. */
+  logoUrl?: string
   sector: string
   size: string
   location: string

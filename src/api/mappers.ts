@@ -244,6 +244,7 @@ export function mapCompany(company: BackendCompanyLike): Company {
     name: company.name,
     logo: initials(company.name),
     logoColor: company.brand_color || fallbackColor(company.id),
+    logoUrl: company.logo_url ?? undefined,
     sector: '',
     size: '',
     location: '',

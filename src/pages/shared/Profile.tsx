@@ -4,9 +4,10 @@ import { Settings, ChevronRight, User, Briefcase, Star, Sliders, Shield, Send, L
 import { Avatar } from '@/components/ui/Avatar'
 import { ProgressRing } from '@/components/ui/ProgressRing'
 import { Button } from '@/components/ui/Button'
+import { CompanyLogo } from '@/components/shared/CompanyLogo'
 import { candidateProfile, recruiterProfile } from '@/data/profile'
 import { getMyCandidateProfile, type CandidateProfileRaw } from '@/api/candidates'
-import { getMyCompany, getDashboardSummary, listMyTeam, type DashboardSummaryRaw } from '@/api/companies'
+import { getMyCompany, getDashboardSummary, listMyTeam, type CompanyProfileRaw, type DashboardSummaryRaw } from '@/api/companies'
 import { getAuthToken, resolveUploadUrl } from '@/api/client'
 import { useApp } from '@/context/AppContext'
 import { useBasePath } from '@/hooks/useBasePath'
@@ -32,12 +33,12 @@ function RecruiterProfile({
   basePath: string
   logout: () => void
 }) {
-  const [companyName, setCompanyName] = useState('')
+  const [company, setCompany] = useState<CompanyProfileRaw | null>(null)
   const [userName, setUserName] = useState(recruiterProfile.name)
   const [summary, setSummary] = useState<DashboardSummaryRaw | null>(null)
 
   useEffect(() => {
-    getMyCompany().then((c) => setCompanyName(c.name)).catch(() => {})
+    getMyCompany().then(setCompany).catch(() => {})
     getDashboardSummary().then(setSummary).catch(() => {})
     const email = getAuthToken()?.email
     if (email) {
@@ -56,7 +57,7 @@ function RecruiterProfile({
         <Avatar name={userName} src={recruiterProfile.avatar} size={72} />
         <div>
           <h1 className="text-lg font-bold text-text-primary lg:text-xl">{userName}</h1>
-          <p className="text-sm text-text-secondary">{companyName || recruiterProfile.title}</p>
+          <p className="text-sm text-text-secondary">{company?.name || recruiterProfile.title}</p>
         </div>
       </div>
       <div className="mt-5 grid grid-cols-3 gap-3">
@@ -64,6 +65,25 @@ function RecruiterProfile({
         <MiniStat label="Candidatures" value={summary ? String(summary.total_applications) : '—'} />
         <MiniStat label="Derniers 30j" value={summary ? String(summary.applications_last_30_days) : '—'} />
       </div>
+
+      <div className="mt-4 rounded-2xl border border-surface-border bg-white p-4">
+        <div className="flex items-center gap-3.5">
+          <CompanyLogo
+            name={company?.name ?? '?'}
+            color={company?.brand_color || '#2F6FED'}
+            src={company?.logo_url ? resolveUploadUrl(company.logo_url) : undefined}
+            size={52}
+          />
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-bold text-text-primary">{company?.name || 'Entreprise'}</p>
+            <p className="truncate text-xs text-text-secondary">{company?.description || 'Aucune description renseignée.'}</p>
+          </div>
+          <button onClick={() => navigate(`${basePath}/profile/edit`)} className="shrink-0 text-xs font-semibold text-brand-blue-600">
+            Modifier
+          </button>
+        </div>
+      </div>
+
       <div className="mt-6 space-y-1">
         <ProfileLink icon={Settings} label="Paramètres" onClick={() => navigate(`${basePath}/settings`)} />
         <ProfileLink icon={LogOut} label="Se déconnecter" danger onClick={logout} />
