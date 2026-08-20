@@ -4,6 +4,44 @@ import { registerJob } from '@/data/jobs'
 import { mapApplicationForCandidate, mapCompany, mapJobOffer, type BackendApplicationForCandidate } from './mappers'
 import type { Application } from '@/types'
 
+export interface ExperienceRaw {
+  id: string
+  title: string
+  company_name: string
+  location: string | null
+  start_date: string
+  end_date: string | null
+  is_current: boolean
+  description: string | null
+  display_order: number
+}
+
+export type ExperienceInput = Omit<ExperienceRaw, 'id'>
+
+export interface EducationRaw {
+  id: string
+  degree: string
+  school: string
+  field_of_study: string | null
+  level: 'none' | 'bac' | 'bac2' | 'bac3' | 'bac5' | 'doctorate' | null
+  start_date: string | null
+  end_date: string | null
+  display_order: number
+}
+
+export type EducationInput = Omit<EducationRaw, 'id'>
+
+export interface CertificationRaw {
+  id: string
+  name: string
+  issuing_organization: string | null
+  issue_date: string | null
+  expiry_date: string | null
+  credential_url: string | null
+}
+
+export type CertificationInput = Omit<CertificationRaw, 'id'>
+
 export interface CandidateProfileRaw {
   candidate_id: string
   email: string
@@ -17,11 +55,11 @@ export interface CandidateProfileRaw {
   cv_file_name: string | null
   cv_uploaded_at: string | null
   completion_percent: number
-  experiences: unknown[]
-  educations: unknown[]
+  experiences: ExperienceRaw[]
+  educations: EducationRaw[]
   skills: { skill_name: string }[]
   languages: { language: string; proficiency: string }[]
-  certifications: unknown[]
+  certifications: CertificationRaw[]
 }
 
 export async function getMyCandidateProfile(): Promise<CandidateProfileRaw> {
@@ -47,6 +85,40 @@ export async function updateMySkills(skillNames: string[]): Promise<CandidatePro
     '/candidates/me/skills',
     skillNames.map((skill_name) => ({ skill_name })),
   )
+}
+
+// Individual CRUD-by-id, unlike skills' bulk PUT — the backend has no
+// bulk-replace for these three, and PATCH is a full overwrite (every
+// field must be sent, not just the ones that changed), matching how
+// the backend service applies model_dump() without exclude_unset.
+export async function addExperience(input: ExperienceInput): Promise<CandidateProfileRaw> {
+  return api.post<CandidateProfileRaw>('/candidates/me/experiences', input)
+}
+export async function updateExperience(id: string, input: ExperienceInput): Promise<CandidateProfileRaw> {
+  return api.patch<CandidateProfileRaw>(`/candidates/me/experiences/${id}`, input)
+}
+export async function deleteExperience(id: string): Promise<CandidateProfileRaw> {
+  return api.delete<CandidateProfileRaw>(`/candidates/me/experiences/${id}`)
+}
+
+export async function addEducation(input: EducationInput): Promise<CandidateProfileRaw> {
+  return api.post<CandidateProfileRaw>('/candidates/me/educations', input)
+}
+export async function updateEducation(id: string, input: EducationInput): Promise<CandidateProfileRaw> {
+  return api.patch<CandidateProfileRaw>(`/candidates/me/educations/${id}`, input)
+}
+export async function deleteEducation(id: string): Promise<CandidateProfileRaw> {
+  return api.delete<CandidateProfileRaw>(`/candidates/me/educations/${id}`)
+}
+
+export async function addCertification(input: CertificationInput): Promise<CandidateProfileRaw> {
+  return api.post<CandidateProfileRaw>('/candidates/me/certifications', input)
+}
+export async function updateCertification(id: string, input: CertificationInput): Promise<CandidateProfileRaw> {
+  return api.patch<CandidateProfileRaw>(`/candidates/me/certifications/${id}`, input)
+}
+export async function deleteCertification(id: string): Promise<CandidateProfileRaw> {
+  return api.delete<CandidateProfileRaw>(`/candidates/me/certifications/${id}`)
 }
 
 export async function applyToJobOffer(jobOfferId: string, coverLetter?: string): Promise<Application> {
