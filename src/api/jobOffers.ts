@@ -1,4 +1,4 @@
-import { api } from './client'
+import { api, getBlob } from './client'
 import type { BackendContractType, BackendEducationLevel, BackendExperienceLevel, BackendWorkMode } from './enums'
 import { mapJobOffer, type BackendJobOfferLike } from './mappers'
 import { registerJob } from '@/data/jobs'
@@ -120,6 +120,14 @@ export interface PipelineSummary {
 
 export async function getPipelineSummary(jobOfferId: string): Promise<PipelineSummary> {
   return api.get<PipelineSummary>(`/job-offers/${jobOfferId}/pipeline-summary`)
+}
+
+export async function downloadApplicationsXlsx(jobOfferId: string): Promise<Blob> {
+  return getBlob(`/job-offers/${jobOfferId}/applications/export.xlsx`)
+}
+
+export async function downloadJobOffersXlsx(): Promise<Blob> {
+  return getBlob('/job-offers/export.xlsx')
 }
 
 // Fetches + maps a job offer into the frontend `Job` shape, registering it

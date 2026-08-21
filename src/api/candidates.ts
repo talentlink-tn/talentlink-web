@@ -195,3 +195,30 @@ export async function listMyApplicationInterviews(applicationId: string): Promis
 export async function downloadMyInterviewIcs(interviewId: string): Promise<Blob> {
   return getBlob(`/candidates/me/interviews/${interviewId}/calendar.ics`)
 }
+
+// ── Job alerts ────────────────────────────────────────────────────────
+
+export interface JobAlertRaw {
+  candidate_id: string
+  is_active: boolean
+  use_profile_matching: boolean
+  min_match_score: number
+  keywords: string | null
+  location: string | null
+  salary_min: number | null
+  salary_max: number | null
+  created_at: string
+  updated_at: string
+}
+
+export type JobAlertUpdateInput = Partial<
+  Pick<JobAlertRaw, 'is_active' | 'use_profile_matching' | 'min_match_score' | 'keywords' | 'location' | 'salary_min' | 'salary_max'>
+>
+
+export async function getMyJobAlert(): Promise<JobAlertRaw> {
+  return api.get<JobAlertRaw>('/candidates/me/job-alert')
+}
+
+export async function updateMyJobAlert(patch: JobAlertUpdateInput): Promise<JobAlertRaw> {
+  return api.put<JobAlertRaw>('/candidates/me/job-alert', patch)
+}

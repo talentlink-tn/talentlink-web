@@ -21,6 +21,7 @@ import { Favorites } from '@/pages/candidate/Favorites'
 import { AdvancedSearch } from '@/pages/candidate/AdvancedSearch'
 import { CompanyProfile } from '@/pages/candidate/CompanyProfile'
 import { Calendar } from '@/pages/candidate/Calendar'
+import { JobAlerts } from '@/pages/candidate/JobAlerts'
 
 import { Messages } from '@/pages/shared/Messages'
 import { Conversation } from '@/pages/shared/Conversation'
@@ -82,6 +83,7 @@ function AppRoutes() {
         <Route path="search" element={<AdvancedSearch />} />
         <Route path="companies/:companyId" element={<CompanyProfile />} />
         <Route path="calendar" element={<Calendar />} />
+        <Route path="job-alerts" element={<JobAlerts />} />
         <Route path="messages" element={<Messages />} />
         <Route path="messages/:conversationId" element={<Conversation />} />
         <Route path="notifications" element={<Notifications />} />

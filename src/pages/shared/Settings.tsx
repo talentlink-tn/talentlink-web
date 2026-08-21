@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  User, Lock, Mail, Trash2, Bell, Globe, Moon, MapPin, Info, HelpCircle, Shield, ChevronRight, LogOut,
+  User, Lock, Mail, Trash2, Bell, BellRing, Globe, Moon, MapPin, Info, HelpCircle, Shield, ChevronRight, LogOut,
 } from 'lucide-react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Avatar } from '@/components/ui/Avatar'
@@ -70,6 +70,9 @@ export function Settings() {
 
       <SectionLabel>Préférences</SectionLabel>
       <Group>
+        {profileType === 'candidate' && (
+          <Row icon={BellRing} label="Alertes emploi" desc="Soyez notifié des offres qui vous correspondent" onClick={() => navigate(`${basePath}/job-alerts`)} />
+        )}
         <div className="flex items-center gap-3 px-4 py-3.5">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-orange-50 text-orange-500">
             <Bell className="size-4" />

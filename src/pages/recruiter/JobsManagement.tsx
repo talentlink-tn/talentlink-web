@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Plus, Users, Eye, XCircle, Archive, RotateCcw, Pencil } from 'lucide-react'
+import { Plus, Users, Eye, XCircle, Archive, RotateCcw, Pencil, Download } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Sheet } from '@/components/ui/Sheet'
@@ -11,6 +11,8 @@ import {
   archiveJobOffer,
   closeJobOffer,
   createJobOffer,
+  downloadApplicationsXlsx,
+  downloadJobOffersXlsx,
   getMyJobOffer,
   listMyJobOffers,
   publishJobOffer,
@@ -51,10 +53,21 @@ const experienceOptions: { value: BackendExperienceLevel; label: string }[] = [
   { value: 'expert', label: 'Expert (10+ ans)' },
 ]
 
+function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
 export function JobsManagement() {
   const navigate = useNavigate()
   const { showToast } = useApp()
   const [sheetOpen, setSheetOpen] = useState(false)
+  const [exportingOffers, setExportingOffers] = useState(false)
+  const [exportingApplicationsId, setExportingApplicationsId] = useState<string | null>(null)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -187,6 +200,30 @@ export function JobsManagement() {
     }
   }
 
+  const handleExportOffers = async () => {
+    setExportingOffers(true)
+    try {
+      const blob = await downloadJobOffersXlsx()
+      downloadBlob(blob, 'offres-emploi.xlsx')
+    } catch (error) {
+      showToast(error instanceof ApiError ? error.message : "Impossible d'exporter les offres.")
+    } finally {
+      setExportingOffers(false)
+    }
+  }
+
+  const handleExportApplications = async (job: ListItem) => {
+    setExportingApplicationsId(job.id)
+    try {
+      const blob = await downloadApplicationsXlsx(job.id)
+      downloadBlob(blob, `candidatures-${job.id}.xlsx`)
+    } catch (error) {
+      showToast(error instanceof ApiError ? error.message : "Impossible d'exporter les candidatures.")
+    } finally {
+      setExportingApplicationsId(null)
+    }
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -194,10 +231,16 @@ export function JobsManagement() {
           <h1 className="text-xl font-extrabold text-text-primary">Gestion des offres</h1>
           <p className="text-sm text-text-secondary">{loading ? 'Chargement…' : `${jobs.length} offres`}</p>
         </div>
-        <Button onClick={openCreateSheet}>
-          <Plus className="size-[18px]" />
-          Publier une offre
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" loading={exportingOffers} onClick={handleExportOffers}>
+            <Download className="size-[18px]" />
+            Exporter
+          </Button>
+          <Button onClick={openCreateSheet}>
+            <Plus className="size-[18px]" />
+            Publier une offre
+          </Button>
+        </div>
       </div>
 
       <div className="mt-6 space-y-3">
@@ -219,6 +262,14 @@ export function JobsManagement() {
               >
                 <Users className="size-3.5" />
                 Candidatures
+              </button>
+              <button
+                onClick={() => handleExportApplications(j)}
+                disabled={exportingApplicationsId === j.id}
+                className="flex size-8 items-center justify-center rounded-lg border border-surface-border text-text-secondary hover:bg-surface-muted disabled:opacity-40"
+                title="Exporter les candidatures"
+              >
+                <Download className="size-3.5" />
               </button>
               <button
                 onClick={() => openEditSheet(j.id)}

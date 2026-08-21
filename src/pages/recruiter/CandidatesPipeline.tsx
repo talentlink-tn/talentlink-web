@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { ArrowRight, CalendarPlus, MessageCircle, XCircle } from 'lucide-react'
+import { ArrowRight, CalendarPlus, Download, MessageCircle, XCircle } from 'lucide-react'
 import { Avatar } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -10,6 +10,7 @@ import { useApp } from '@/context/AppContext'
 import { ApiError } from '@/api/client'
 import { changeApplicationStatus, listApplications, mapApplicationToRecruiterCandidate } from '@/api/applications'
 import { scheduleInterview, type InterviewReadRaw } from '@/api/interviews'
+import { downloadApplicationsXlsx } from '@/api/jobOffers'
 import type { BackendApplicationStatus } from '@/api/mappers'
 import type { RecruiterCandidate } from '@/types'
 import { cn } from '@/utils/cn'
@@ -45,6 +46,8 @@ export function CandidatesPipeline() {
   const [ivDuration, setIvDuration] = useState(60)
   const [ivLocation, setIvLocation] = useState('')
   const [scheduledOk, setScheduledOk] = useState<string | null>(null)
+  const [exporting, setExporting] = useState(false)
+  const jobOfferId = location.state?.jobOfferId
 
   const load = () => {
     setLoading(true)
@@ -105,6 +108,24 @@ export function CandidatesPipeline() {
     }
   }
 
+  const handleExport = async () => {
+    if (!jobOfferId) return
+    setExporting(true)
+    try {
+      const blob = await downloadApplicationsXlsx(jobOfferId)
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `candidatures-${jobOfferId}.xlsx`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      showToast(error instanceof ApiError ? error.message : "Impossible d'exporter les candidatures.")
+    } finally {
+      setExporting(false)
+    }
+  }
+
   const reject = async (id: string) => {
     setActing(true)
     try {
@@ -121,8 +142,18 @@ export function CandidatesPipeline() {
 
   return (
     <div>
-      <h1 className="text-xl font-extrabold text-text-primary">Gestion des candidatures</h1>
-      <p className="text-sm text-text-secondary">{loading ? 'Chargement…' : `${candidates.length} candidatures`}</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-extrabold text-text-primary">Gestion des candidatures</h1>
+          <p className="text-sm text-text-secondary">{loading ? 'Chargement…' : `${candidates.length} candidatures`}</p>
+        </div>
+        {jobOfferId && (
+          <Button variant="outline" loading={exporting} onClick={handleExport}>
+            <Download className="size-[18px]" />
+            Exporter
+          </Button>
+        )}
+      </div>
 
       <div className="mt-6 grid gap-4 lg:grid-cols-3">
         {columns.map((col) => {
