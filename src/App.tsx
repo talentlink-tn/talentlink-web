@@ -45,6 +45,7 @@ import { Statistics } from '@/pages/recruiter/Statistics'
 
 import { CareerPage } from '@/pages/public/CareerPage'
 import { PublicJobDetail } from '@/pages/public/PublicJobDetail'
+import { Landing } from '@/pages/public/Landing'
 
 import { AdminShell } from '@/layouts/AdminShell'
 import { AdminLogin } from '@/pages/admin/AdminLogin'
@@ -65,6 +66,12 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/choose-profile" element={<ChooseProfile />} />
+
+      {/* Desktop marketing vitrine — deliberately its own route, not "/":
+          Splash.tsx stays the real app entry point (boot screen +
+          unauthenticated-visitor redirect logic). This is for people
+          arriving from an external/shared link instead. */}
+      <Route path="/accueil" element={<Landing />} />
 
       {/* Public, unauthenticated career pages — no AppShell/RecruiterShell
           chrome, module 5's backend endpoints had no frontend consumer
