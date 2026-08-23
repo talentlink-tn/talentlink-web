@@ -4,6 +4,8 @@ import { MapPin, Globe, Users2 } from 'lucide-react'
 import { Logo } from '@/components/layout/Logo'
 import { CompanyLogo } from '@/components/shared/CompanyLogo'
 import { PublicJobCard } from '@/components/shared/PublicJobCard'
+import { Skeleton } from '@/components/ui/Skeleton'
+import { SkeletonGridCards } from '@/components/shared/SkeletonRows'
 import { getPublicCompany, listPublicJobOffers } from '@/api/publicApi'
 import { resolveUploadUrl } from '@/api/client'
 import type { Company, Job } from '@/types'
@@ -51,7 +53,22 @@ export function CareerPage() {
       </header>
 
       <main className="animate-fade-in mx-auto w-full max-w-6xl px-4 py-8 lg:px-8">
-        {loading && <p className="py-12 text-center text-sm text-text-tertiary">Chargement…</p>}
+        {loading && (
+          <div className="space-y-6">
+            <div className="rounded-3xl border border-surface-border bg-white p-6 lg:p-10">
+              <div className="flex items-center gap-5">
+                <Skeleton className="size-20 shrink-0 rounded-2xl" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-5 w-1/3 rounded-lg" />
+                  <Skeleton className="h-3.5 w-1/2 rounded-lg" />
+                </div>
+              </div>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <SkeletonGridCards count={6} />
+            </div>
+          </div>
+        )}
 
         {notFound && (
           <div className="py-16 text-center">

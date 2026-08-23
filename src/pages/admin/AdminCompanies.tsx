@@ -3,6 +3,7 @@ import { Building2 } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { SkeletonRows } from '@/components/shared/SkeletonRows'
 import {
   approveCompany,
   listCompanies,
@@ -73,12 +74,12 @@ export function AdminCompanies() {
 
       <div className="mt-4 space-y-2.5">
         {loading ? (
-          <p className="py-8 text-center text-sm text-text-tertiary">Chargement…</p>
+          <SkeletonRows count={4} />
         ) : companies.length === 0 ? (
           <EmptyState icon={<Building2 className="size-6" />} title="Aucune entreprise" description="Aucune entreprise ne correspond à ce filtre." />
         ) : (
           companies.map((c) => (
-            <div key={c.id} className="flex flex-col gap-3 rounded-2xl border border-surface-border bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div key={c.id} className="flex flex-col gap-3 rounded-2xl border border-surface-border bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-md sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="truncate text-sm font-bold text-text-primary">{c.name}</span>

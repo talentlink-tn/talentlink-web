@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Sheet } from '@/components/ui/Sheet'
 import { useApp } from '@/context/AppContext'
+import { SkeletonCompactRows } from '@/components/shared/SkeletonRows'
 import { ApiError } from '@/api/client'
 import { changeApplicationStatus, listApplications, mapApplicationToRecruiterCandidate } from '@/api/applications'
 import { scheduleInterview, type InterviewReadRaw } from '@/api/interviews'
@@ -167,21 +168,27 @@ export function CandidatesPipeline() {
                 </span>
               </div>
               <div className="space-y-2.5">
-                {items.map((c) => (
-                  <button
-                    key={c.id}
-                    onClick={() => openCandidate(c)}
-                    className="flex w-full items-center gap-2.5 rounded-xl border border-surface-border bg-surface-muted/40 p-3 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:bg-white hover:shadow-sm"
-                  >
-                    <Avatar name={c.name} color={c.avatarColor} size={38} />
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-semibold text-text-primary">{c.name}</span>
-                      <span className="block truncate text-xs text-text-tertiary">{c.role}</span>
-                    </span>
-                    <span className={cn('text-xs font-bold', c.matchScore >= 85 ? 'text-green-600' : 'text-orange-500')}>{c.matchScore}%</span>
-                  </button>
-                ))}
-                {items.length === 0 && <p className="py-6 text-center text-xs text-text-tertiary">Aucun candidat</p>}
+                {loading ? (
+                  <SkeletonCompactRows count={2} />
+                ) : (
+                  <>
+                    {items.map((c) => (
+                      <button
+                        key={c.id}
+                        onClick={() => openCandidate(c)}
+                        className="flex w-full items-center gap-2.5 rounded-xl border border-surface-border bg-surface-muted/40 p-3 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:bg-white hover:shadow-md"
+                      >
+                        <Avatar name={c.name} color={c.avatarColor} size={38} />
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-semibold text-text-primary">{c.name}</span>
+                          <span className="block truncate text-xs text-text-tertiary">{c.role}</span>
+                        </span>
+                        <span className={cn('text-xs font-bold', c.matchScore >= 85 ? 'text-green-600' : 'text-orange-500')}>{c.matchScore}%</span>
+                      </button>
+                    ))}
+                    {items.length === 0 && <p className="py-6 text-center text-xs text-text-tertiary">Aucun candidat</p>}
+                  </>
+                )}
               </div>
             </div>
           )

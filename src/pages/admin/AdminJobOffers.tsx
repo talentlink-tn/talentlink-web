@@ -3,6 +3,7 @@ import { Briefcase } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { SkeletonRows } from '@/components/shared/SkeletonRows'
 import { listJobOffersAdmin, restoreJobOfferAdmin, suspendJobOfferAdmin, type JobOfferAdminRaw, type JobOfferStatus } from '@/api/admin'
 import { cn } from '@/utils/cn'
 
@@ -69,12 +70,12 @@ export function AdminJobOffers() {
 
       <div className="mt-4 space-y-2.5">
         {loading ? (
-          <p className="py-8 text-center text-sm text-text-tertiary">Chargement…</p>
+          <SkeletonRows count={4} />
         ) : offers.length === 0 ? (
           <EmptyState icon={<Briefcase className="size-6" />} title="Aucune offre" description="Aucune offre ne correspond à ce filtre." />
         ) : (
           offers.map((o) => (
-            <div key={o.id} className="flex flex-col gap-3 rounded-2xl border border-surface-border bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div key={o.id} className="flex flex-col gap-3 rounded-2xl border border-surface-border bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-md sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="truncate text-sm font-bold text-text-primary">{o.title}</span>

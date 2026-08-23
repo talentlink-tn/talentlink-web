@@ -5,6 +5,7 @@ import { Sheet } from '@/components/ui/Sheet'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Switch } from '@/components/ui/Switch'
+import { SkeletonBlock } from '@/components/shared/SkeletonRows'
 import {
   getMyCandidateProfile,
   uploadMyCv,
@@ -127,7 +128,7 @@ export function MyCV() {
     return (
       <div className="px-4 pt-4 pb-8">
         <PageHeader title="Mon CV" action={<Download className="size-[18px] text-text-secondary" />} />
-        <p className="mt-8 text-center text-sm text-text-tertiary">Chargement…</p>
+        <SkeletonBlock />
       </div>
     )
   }

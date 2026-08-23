@@ -4,6 +4,7 @@ import { Search, MessageSquare } from 'lucide-react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Avatar } from '@/components/ui/Avatar'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { SkeletonDivideRows } from '@/components/shared/SkeletonRows'
 import { resolveUploadUrl } from '@/api/client'
 import { useApp } from '@/context/AppContext'
 import { useBasePath } from '@/hooks/useBasePath'
@@ -62,7 +63,7 @@ export function Messages() {
 
       <div className="mt-2 divide-y divide-surface-border">
         {conversationsLoading && filtered.length === 0 ? (
-          <p className="py-12 text-center text-sm text-text-tertiary">Chargement…</p>
+          <SkeletonDivideRows count={5} />
         ) : filtered.length === 0 ? (
           <EmptyState icon={<MessageSquare className="size-6" />} title="Aucune conversation" description="Vos échanges avec les recruteurs apparaîtront ici." />
         ) : (

@@ -4,6 +4,7 @@ import { MapPin, Briefcase, TrendingUp, GraduationCap } from 'lucide-react'
 import { Logo } from '@/components/layout/Logo'
 import { CompanyLogo } from '@/components/shared/CompanyLogo'
 import { Badge } from '@/components/ui/Badge'
+import { Skeleton } from '@/components/ui/Skeleton'
 import { getCompany } from '@/data/companies'
 import { getPublicJobOffer } from '@/api/publicApi'
 import { modeTone } from '@/utils/format'
@@ -51,7 +52,18 @@ export function PublicJobDetail() {
       </header>
 
       <main className="animate-fade-in mx-auto w-full max-w-4xl px-4 py-8 lg:px-8">
-        {loading && <p className="py-12 text-center text-sm text-text-tertiary">Chargement…</p>}
+        {loading && (
+          <div className="rounded-3xl border border-surface-border bg-white p-6 lg:p-8">
+            <Skeleton className="size-14 rounded-2xl" />
+            <Skeleton className="mt-4 h-7 w-2/3 rounded-lg" />
+            <Skeleton className="mt-2 h-4 w-1/3 rounded-lg" />
+            <div className="mt-6 space-y-2">
+              <Skeleton className="h-3.5 w-full rounded-lg" />
+              <Skeleton className="h-3.5 w-5/6 rounded-lg" />
+              <Skeleton className="h-3.5 w-2/3 rounded-lg" />
+            </div>
+          </div>
+        )}
 
         {job && (
           <>

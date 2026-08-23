@@ -5,6 +5,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import { StatTile } from '@/components/ui/StatTile'
 import { JobCard } from '@/components/shared/JobCard'
 import { CompanyLogo } from '@/components/shared/CompanyLogo'
+import { SkeletonGridCards } from '@/components/shared/SkeletonRows'
 import { getRecommendedJobs } from '@/api/candidates'
 import { getMyCandidateProfile, type CandidateProfileRaw } from '@/api/candidates'
 import { resolveUploadUrl } from '@/api/client'
@@ -80,7 +81,7 @@ export function Dashboard() {
         </button>
       </div>
       <div className="mt-3 grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
-        {loading && <p className="col-span-full py-4 text-center text-sm text-text-tertiary">Chargement…</p>}
+        {loading && <SkeletonGridCards count={3} />}
         {!loading && jobs.length === 0 && (
           <p className="col-span-full py-4 text-center text-sm text-text-tertiary">Aucune offre recommandée pour le moment.</p>
         )}

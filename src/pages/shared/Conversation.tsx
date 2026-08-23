@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useParams, Navigate, useNavigate } from 'react-router-dom'
 import { ChevronLeft, Send } from 'lucide-react'
 import { Avatar } from '@/components/ui/Avatar'
+import { Skeleton } from '@/components/ui/Skeleton'
 import { resolveUploadUrl, getAuthToken } from '@/api/client'
 import { listApplicationMessages, markApplicationMessagesRead, sendApplicationMessage, type MessageRaw } from '@/api/messages'
 import { timeAgoFr } from '@/api/enums'
@@ -79,7 +80,19 @@ export function Conversation() {
       </div>
 
       <div className="flex-1 space-y-3 px-4 py-4">
-        {loading && messages.length === 0 && <p className="py-12 text-center text-sm text-text-tertiary">Chargement…</p>}
+        {loading && messages.length === 0 && (
+          <>
+            <div className="flex justify-start">
+              <Skeleton className="h-10 w-2/5 rounded-2xl rounded-bl-md" />
+            </div>
+            <div className="flex justify-end">
+              <Skeleton className="h-10 w-1/3 rounded-2xl rounded-br-md" />
+            </div>
+            <div className="flex justify-start">
+              <Skeleton className="h-14 w-1/2 rounded-2xl rounded-bl-md" />
+            </div>
+          </>
+        )}
         {messages.map((m) => (
           <div key={m.id} className={cn('flex', m.sender_type === mySenderType ? 'justify-end' : 'justify-start')}>
             <div

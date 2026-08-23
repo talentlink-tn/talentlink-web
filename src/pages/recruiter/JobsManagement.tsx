@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Sheet } from '@/components/ui/Sheet'
 import { Input } from '@/components/ui/Input'
 import { useApp } from '@/context/AppContext'
+import { SkeletonRows } from '@/components/shared/SkeletonRows'
 import { ApiError } from '@/api/client'
 import {
   archiveJobOffer,
@@ -243,9 +244,14 @@ export function JobsManagement() {
         </div>
       </div>
 
+      {loading && jobs.length === 0 ? (
+        <div className="mt-6">
+          <SkeletonRows count={4} />
+        </div>
+      ) : (
       <div className="mt-6 space-y-3">
         {jobs.map((j) => (
-          <div key={j.id} className="flex flex-col gap-3 rounded-2xl border border-surface-border bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div key={j.id} className="flex flex-col gap-3 rounded-2xl border border-surface-border bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-md sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
                 <p className="truncate text-[15px] font-bold text-text-primary">{j.title}</p>
@@ -313,6 +319,7 @@ export function JobsManagement() {
           </div>
         ))}
       </div>
+      )}
 
       <Sheet open={sheetOpen} onClose={closeSheet} title={editingId ? "Modifier l'offre" : 'Publier une nouvelle offre'}>
         <div className="space-y-4">

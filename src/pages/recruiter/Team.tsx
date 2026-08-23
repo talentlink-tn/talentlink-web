@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/Input'
 import { Switch } from '@/components/ui/Switch'
 import { Avatar } from '@/components/ui/Avatar'
 import { useApp } from '@/context/AppContext'
+import { SkeletonRows } from '@/components/shared/SkeletonRows'
 import { ApiError, getAuthToken } from '@/api/client'
 import { listMyTeam, inviteTeamMember, updateTeamMember, type TeamMemberRaw } from '@/api/companies'
 
@@ -119,9 +120,14 @@ export function Team() {
         </p>
       )}
 
+      {loading ? (
+        <div className="mt-6">
+          <SkeletonRows count={4} avatar />
+        </div>
+      ) : (
       <div className="mt-6 space-y-3">
         {members.map((m) => (
-          <div key={m.id} className="flex items-center gap-3 rounded-2xl border border-surface-border bg-white p-4">
+          <div key={m.id} className="flex items-center gap-3 rounded-2xl border border-surface-border bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-blue-200 hover:shadow-md">
             <Avatar name={m.full_name} size={44} />
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
@@ -149,6 +155,7 @@ export function Team() {
           </div>
         ))}
       </div>
+      )}
 
       <Sheet open={addOpen} onClose={() => setAddOpen(false)} title="Ajouter un membre">
         <div className="space-y-4">

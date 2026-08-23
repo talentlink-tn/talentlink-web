@@ -4,6 +4,7 @@ import { Search, SlidersHorizontal } from 'lucide-react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { JobCard } from '@/components/shared/JobCard'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { SkeletonGridCards } from '@/components/shared/SkeletonRows'
 import { getCompany } from '@/data/companies'
 import { getRecommendedJobs } from '@/api/candidates'
 import { cn } from '@/utils/cn'
@@ -90,7 +91,11 @@ export function JobSearch() {
       </div>
 
       <div className="mt-2 px-4 lg:px-0">
-        {!loading && filtered.length === 0 ? (
+        {loading ? (
+          <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
+            <SkeletonGridCards count={6} />
+          </div>
+        ) : filtered.length === 0 ? (
           <EmptyState icon={<Search className="size-6" />} title="Aucune offre trouvée" description="Essayez d'ajuster vos filtres ou votre recherche." />
         ) : (
           <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">

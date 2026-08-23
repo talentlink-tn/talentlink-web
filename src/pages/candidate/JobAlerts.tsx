@@ -3,6 +3,7 @@ import { PageHeader } from '@/components/layout/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Switch } from '@/components/ui/Switch'
+import { Skeleton } from '@/components/ui/Skeleton'
 import { ApiError } from '@/api/client'
 import { getMyJobAlert, updateMyJobAlert, type JobAlertRaw } from '@/api/candidates'
 import { useApp } from '@/context/AppContext'
@@ -61,7 +62,15 @@ export function JobAlerts() {
     return (
       <div className="px-4 pt-4 pb-8">
         <PageHeader title="Alertes emploi" />
-        <p className="mt-6 text-center text-sm text-text-secondary">Chargement…</p>
+        <div className="mt-6 space-y-3 rounded-2xl border border-surface-border bg-white p-4">
+          <Skeleton className="h-10 w-full rounded-xl" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="mt-4 space-y-3 rounded-2xl border border-surface-border bg-white p-4">
+          <Skeleton className="h-10 w-full rounded-xl" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
       </div>
     )
   }
