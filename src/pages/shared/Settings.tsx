@@ -92,7 +92,8 @@ export function Settings() {
       <Group>
         <Row icon={Info} label="À propos de Talent Link" desc="Version 1.0.0" onClick={() => showToast('Talent Link v1.0.0')} />
         <Row icon={HelpCircle} label="Aide et support" desc="FAQ et assistance" onClick={() => navigate(`${basePath}/help`)} />
-        <Row icon={Shield} label="Conditions d'utilisation" desc="Politique de confidentialité" onClick={() => showToast('Ouverture des conditions…')} />
+        <Row icon={Shield} label="Conditions d'utilisation" desc="CGU de la plateforme" onClick={() => navigate('/terms')} />
+        <Row icon={Shield} label="Politique de confidentialité" desc="Comment vos données sont traitées" onClick={() => navigate('/privacy-policy')} />
       </Group>
 
       <Button

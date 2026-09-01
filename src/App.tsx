@@ -8,6 +8,8 @@ import { Splash } from '@/pages/auth/Splash'
 import { Onboarding } from '@/pages/auth/Onboarding'
 import { Login } from '@/pages/auth/Login'
 import { Register } from '@/pages/auth/Register'
+import { ForgotPassword } from '@/pages/auth/ForgotPassword'
+import { ResetPassword } from '@/pages/auth/ResetPassword'
 import { ChooseProfile } from '@/pages/auth/ChooseProfile'
 
 import { Dashboard } from '@/pages/candidate/Dashboard'
@@ -46,6 +48,8 @@ import { Statistics } from '@/pages/recruiter/Statistics'
 import { CareerPage } from '@/pages/public/CareerPage'
 import { PublicJobDetail } from '@/pages/public/PublicJobDetail'
 import { Landing } from '@/pages/public/Landing'
+import { Terms } from '@/pages/public/Terms'
+import { PrivacyPolicy } from '@/pages/public/PrivacyPolicy'
 
 import { AdminShell } from '@/layouts/AdminShell'
 import { AdminLogin } from '@/pages/admin/AdminLogin'
@@ -65,6 +69,8 @@ function AppRoutes() {
       <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/choose-profile" element={<ChooseProfile />} />
 
       {/* Desktop marketing vitrine — deliberately its own route, not "/":
@@ -72,6 +78,8 @@ function AppRoutes() {
           unauthenticated-visitor redirect logic). This is for people
           arriving from an external/shared link instead. */}
       <Route path="/accueil" element={<Landing />} />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
       {/* Public, unauthenticated career pages — no AppShell/RecruiterShell
           chrome, module 5's backend endpoints had no frontend consumer

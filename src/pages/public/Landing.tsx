@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion, type Variants } from 'framer-motion'
 import { ArrowRight, Sparkles, Workflow, Smartphone, ShieldCheck } from 'lucide-react'
 import { Logo } from '@/components/layout/Logo'
@@ -172,6 +172,14 @@ export function Landing() {
       <footer className="border-t border-surface-border px-6 py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
           <Logo size={28} />
+          <div className="flex items-center gap-5 text-xs text-text-tertiary">
+            <Link to="/terms" className="hover:text-text-secondary hover:underline">
+              Conditions d'utilisation
+            </Link>
+            <Link to="/privacy-policy" className="hover:text-text-secondary hover:underline">
+              Politique de confidentialité
+            </Link>
+          </div>
           <p className="text-xs text-text-tertiary">© {new Date().getFullYear()} Talent Link. Tous droits réservés.</p>
         </div>
       </footer>

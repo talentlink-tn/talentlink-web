@@ -22,6 +22,7 @@ export function Register() {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
 
   const checks = {
     length: password.length >= 8,
@@ -101,7 +102,28 @@ export function Register() {
           <CheckItem ok={checks.special} label="Un caractère spécial" />
         </div>
 
-        <Button type="submit" size="lg" fullWidth>
+        <label className="flex items-start gap-2.5 text-xs text-text-secondary">
+          <input
+            type="checkbox"
+            checked={acceptedTerms}
+            onChange={(e) => setAcceptedTerms(e.target.checked)}
+            required
+            className="mt-0.5 size-4 shrink-0 rounded border-surface-border text-brand-blue-600 focus:ring-brand-blue-500/30"
+          />
+          <span>
+            J'accepte les{' '}
+            <Link to="/terms" target="_blank" className="font-semibold text-brand-blue-600 hover:underline">
+              Conditions Générales d'Utilisation
+            </Link>{' '}
+            et la{' '}
+            <Link to="/privacy-policy" target="_blank" className="font-semibold text-brand-blue-600 hover:underline">
+              Politique de Confidentialité
+            </Link>
+            .
+          </span>
+        </label>
+
+        <Button type="submit" size="lg" fullWidth disabled={!acceptedTerms}>
           Créer mon compte
         </Button>
       </form>

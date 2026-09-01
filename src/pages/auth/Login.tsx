@@ -99,9 +99,9 @@ export function Login() {
         />
         {error && <p className="text-sm text-red-600">{error}</p>}
         <div className="flex justify-end">
-          <button type="button" className="text-sm font-medium text-brand-blue-600 hover:underline">
+          <Link to="/forgot-password" className="text-sm font-medium text-brand-blue-600 hover:underline">
             Mot de passe oublié ?
-          </button>
+          </Link>
         </div>
         <Button type="submit" size="lg" fullWidth loading={loading}>
           Se connecter
