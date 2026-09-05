@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams, Navigate } from 'react-router-dom'
-import { MapPin, Briefcase, DollarSign, Calendar, ChevronRight, FileText, CheckCircle2, Lightbulb, Headphones } from 'lucide-react'
+import { MapPin, Briefcase, DollarSign, Calendar, ChevronRight, FileText, CheckCircle2, Lightbulb, Headphones, Star } from 'lucide-react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { CompanyLogo } from '@/components/shared/CompanyLogo'
 import { ApplicationStatusBadge } from '@/components/shared/ApplicationStatusBadge'
@@ -10,6 +10,8 @@ import { getApplication } from '@/data/applications'
 import { getJob } from '@/data/jobs'
 import { getCompany } from '@/data/companies'
 import { useApp, getMyApplication } from '@/context/AppContext'
+import { submitApplicationSurvey } from '@/api/candidates'
+import { ApiError } from '@/api/client'
 import type { Application } from '@/types'
 import { cn } from '@/utils/cn'
 
@@ -32,6 +34,7 @@ export function ApplicationDetail() {
   const [tab, setTab] = useState<(typeof tabs)[number]>('Aperçu')
   const [fetched, setFetched] = useState<Application | null>(null)
   const [fetchFailed, setFetchFailed] = useState(false)
+  const [surveyOverride, setSurveyOverride] = useState<Application | null>(null)
 
   const fromContext = applications.find((a) => a.id === applicationId)
 
@@ -45,7 +48,7 @@ export function ApplicationDetail() {
       .catch(() => setFetchFailed(true))
   }, [applicationId, fromContext])
 
-  const application = fromContext ?? fetched ?? getApplication(applicationId ?? '')
+  const application = surveyOverride ?? fromContext ?? fetched ?? getApplication(applicationId ?? '')
   if (!application) {
     if (applicationsLoading || (!fetchFailed && !fromContext)) return null
     return <Navigate to="/app/applications" replace />
@@ -158,6 +161,13 @@ export function ApplicationDetail() {
                 <p className="mt-1 text-xs text-text-secondary">Préparez votre entretien et complétez votre profil pour augmenter vos chances.</p>
               </div>
             </div>
+
+            {(application.status === 'accepted' || application.status === 'refused') && (
+              <SatisfactionSurveyCard
+                application={application}
+                onSubmitted={(updated) => setSurveyOverride(updated)}
+              />
+            )}
           </div>
         )}
 
@@ -246,6 +256,69 @@ export function ApplicationDetail() {
           Contacter le recruteur
         </Button>
       </div>
+    </div>
+  )
+}
+
+function SatisfactionSurveyCard({
+  application,
+  onSubmitted,
+}: {
+  application: Application
+  onSubmitted: (updated: Application) => void
+}) {
+  const { showToast } = useApp()
+  const [rating, setRating] = useState(0)
+  const [comment, setComment] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+
+  if (application.satisfactionRating != null) {
+    return (
+      <div className="rounded-2xl border border-green-200 bg-green-50 p-4 text-center">
+        <p className="text-sm font-semibold text-green-800">Merci pour votre retour !</p>
+        <p className="mt-1 text-xs text-green-700">Vous avez noté votre expérience {application.satisfactionRating}/5.</p>
+      </div>
+    )
+  }
+
+  const handleSubmit = async () => {
+    if (rating === 0) {
+      showToast('Merci de sélectionner une note.')
+      return
+    }
+    setSubmitting(true)
+    try {
+      const updated = await submitApplicationSurvey(application.id, rating, comment.trim() || undefined)
+      onSubmitted(updated)
+      showToast('Merci pour votre retour !')
+    } catch (error) {
+      showToast(error instanceof ApiError ? error.message : "Impossible d'envoyer votre évaluation.")
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <div className="rounded-2xl border border-surface-border bg-white p-4">
+      <p className="text-sm font-semibold text-text-primary">Votre avis compte</p>
+      <p className="mt-1 mb-3 text-xs text-text-secondary">Comment évaluez-vous votre expérience de candidature ?</p>
+      <div className="flex items-center justify-center gap-1.5">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <button key={n} type="button" onClick={() => setRating(n)} aria-label={`${n} étoiles`}>
+            <Star className={cn('size-7', n <= rating ? 'fill-orange-400 text-orange-400' : 'text-surface-border')} />
+          </button>
+        ))}
+      </div>
+      <textarea
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        rows={3}
+        placeholder="Un commentaire à ajouter ? (optionnel)"
+        className="mt-3 w-full rounded-xl border border-surface-border bg-white p-3 text-sm focus:border-brand-blue-500 focus:ring-4 focus:ring-brand-blue-500/10 focus:outline-none"
+      />
+      <Button fullWidth className="mt-3" loading={submitting} onClick={handleSubmit}>
+        Envoyer mon avis
+      </Button>
     </div>
   )
 }

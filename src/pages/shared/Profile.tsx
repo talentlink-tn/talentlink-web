@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Settings, ChevronRight, User, Briefcase, Star, Sliders, Shield, Send, LogOut, FileText, Users } from 'lucide-react'
+import { Settings, ChevronRight, User, Briefcase, Star, Sliders, Shield, Send, LogOut, FileText, Users, Users2 } from 'lucide-react'
 import { Avatar } from '@/components/ui/Avatar'
 import { ProgressRing } from '@/components/ui/ProgressRing'
 import { Button } from '@/components/ui/Button'
@@ -125,6 +125,7 @@ function RecruiterProfile({
 
       <div className="mt-6 space-y-1">
         <ProfileLink icon={Users} label="Gestion d'équipe" onClick={() => navigate(`${basePath}/team`)} />
+        <ProfileLink icon={Users2} label="Vivier de talents" onClick={() => navigate(`${basePath}/talent-pool`)} />
         <ProfileLink icon={Settings} label="Paramètres" onClick={() => navigate(`${basePath}/settings`)} />
         <ProfileLink icon={LogOut} label="Se déconnecter" danger onClick={logout} />
       </div>

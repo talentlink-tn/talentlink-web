@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { StatTile } from '@/components/ui/StatTile'
-import { Users, Briefcase, Clock, TrendingUp } from 'lucide-react'
+import { Users, Briefcase, Clock, TrendingUp, Heart, UserCheck, AlertCircle } from 'lucide-react'
 import { getDashboardSummary, type DashboardSummaryRaw } from '@/api/companies'
+import { useBasePath } from '@/hooks/useBasePath'
 
 // No backend module tracks month-over-month history or acquisition
 // channel (LinkedIn/site carrière/recommandation) — see this repo's
@@ -24,6 +26,8 @@ const sources = [
 ]
 
 export function Statistics() {
+  const navigate = useNavigate()
+  const basePath = useBasePath()
   const [summary, setSummary] = useState<DashboardSummaryRaw | null>(null)
   const maxMonthly = Math.max(...monthly.map((m) => m.value))
 
@@ -66,6 +70,40 @@ export function Statistics() {
           tone="orange"
         />
       </div>
+
+      <div className="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <StatTile
+          icon={<Clock className="size-[18px]" />}
+          value={summary?.average_time_to_hire_days != null ? `${Math.round(summary.average_time_to_hire_days)} j` : '—'}
+          label="Délai moyen de recrutement"
+          tone="blue"
+        />
+        <StatTile
+          icon={<UserCheck className="size-[18px]" />}
+          value={summary?.retention_rate_percent != null ? `${Math.round(summary.retention_rate_percent)}%` : '—'}
+          label="Taux de rétention (12 mois)"
+          tone="green"
+        />
+        <StatTile
+          icon={<Heart className="size-[18px]" />}
+          value={summary?.candidate_experience_score != null ? `${summary.candidate_experience_score.toFixed(1)}/5` : '—'}
+          label="Expérience candidat"
+          tone="purple"
+        />
+      </div>
+
+      {!!summary?.retention_checks_pending && (
+        <button
+          onClick={() => navigate(`${basePath}/retention-checks`)}
+          className="mt-4 flex w-full items-center gap-3 rounded-2xl border border-orange-200 bg-orange-50 p-4 text-left transition-colors hover:bg-orange-100"
+        >
+          <AlertCircle className="size-5 shrink-0 text-orange-500" />
+          <span className="flex-1 text-sm font-medium text-orange-800">
+            {summary.retention_checks_pending} candidat{summary.retention_checks_pending > 1 ? 's' : ''} embauché{summary.retention_checks_pending > 1 ? 's' : ''} depuis plus de 12 mois — vérifiez s'ils sont toujours en poste.
+          </span>
+          <span className="shrink-0 text-xs font-semibold text-orange-700">Vérifier</span>
+        </button>
+      )}
 
       <div className="mt-7 grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-surface-border bg-white p-5">

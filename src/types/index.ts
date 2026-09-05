@@ -88,6 +88,8 @@ export interface Application {
     languages: number
   }
   documents: ApplicationDocument[]
+  satisfactionRating: number | null
+  satisfactionComment: string | null
   interview?: {
     type: string
     duration: string

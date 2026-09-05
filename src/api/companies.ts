@@ -102,8 +102,24 @@ export interface DashboardSummaryRaw {
   applications_by_status: Record<string, number>
   applications_last_30_days: number
   average_match_score: number | null
+  average_time_to_hire_days: number | null
+  retention_rate_percent: number | null
+  retention_checks_pending: number
+  candidate_experience_score: number | null
 }
 
 export async function getDashboardSummary(): Promise<DashboardSummaryRaw> {
   return api.get<DashboardSummaryRaw>('/companies/me/dashboard')
+}
+
+export interface TalentPoolEntryRaw {
+  id: string
+  candidate: { candidate_id: string; first_name: string; last_name: string; headline: string | null; photo_url: string | null }
+  source_job_offer_id: string | null
+  source_job_offer_title: string | null
+  added_at: string
+}
+
+export async function getTalentPool(): Promise<TalentPoolEntryRaw[]> {
+  return api.get<TalentPoolEntryRaw[]>('/companies/me/talent-pool')
 }

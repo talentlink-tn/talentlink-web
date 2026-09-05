@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  User, Lock, Mail, Trash2, Bell, BellRing, Globe, Moon, MapPin, Info, HelpCircle, Shield, ChevronRight, LogOut, FileSignature,
+  User, Lock, Mail, Trash2, Bell, BellRing, Globe, Moon, MapPin, Info, HelpCircle, Shield, ChevronRight, LogOut, FileSignature, Users2,
 } from 'lucide-react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Avatar } from '@/components/ui/Avatar'
@@ -9,9 +9,9 @@ import { CompanyLogo } from '@/components/shared/CompanyLogo'
 import { Switch } from '@/components/ui/Switch'
 import { Button } from '@/components/ui/Button'
 import { candidateProfile, recruiterProfile } from '@/data/profile'
-import { getMyCandidateProfile } from '@/api/candidates'
+import { getMyCandidateProfile, updateMyCandidateProfile } from '@/api/candidates'
 import { getMyCompany, listMyTeam } from '@/api/companies'
-import { getAuthToken, resolveUploadUrl } from '@/api/client'
+import { ApiError, getAuthToken, resolveUploadUrl } from '@/api/client'
 import { useApp } from '@/context/AppContext'
 import { useBasePath } from '@/hooks/useBasePath'
 
@@ -24,6 +24,7 @@ export function Settings() {
   const [subtitle, setSubtitle] = useState(profileType === 'recruiter' ? recruiterProfile.title : candidateProfile.title)
   const [avatarSrc, setAvatarSrc] = useState<string | undefined>(profileType === 'recruiter' ? undefined : candidateProfile.avatar)
   const [brandColor, setBrandColor] = useState('#2F6FED')
+  const [talentPoolOptIn, setTalentPoolOptIn] = useState(false)
 
   useEffect(() => {
     const email = getAuthToken()?.email
@@ -49,10 +50,21 @@ export function Settings() {
           setName(`${p.first_name} ${p.last_name}`)
           setSubtitle(p.headline || 'Titre professionnel non renseigné')
           if (p.photo_url) setAvatarSrc(resolveUploadUrl(p.photo_url))
+          setTalentPoolOptIn(p.talent_pool_opt_in)
         })
         .catch(() => {})
     }
   }, [profileType])
+
+  const handleTalentPoolToggle = async (value: boolean) => {
+    setTalentPoolOptIn(value)
+    try {
+      await updateMyCandidateProfile({ talent_pool_opt_in: value })
+    } catch (error) {
+      setTalentPoolOptIn(!value)
+      showToast(error instanceof ApiError ? error.message : 'Impossible de mettre à jour cette préférence.')
+    }
+  }
 
   return (
     <div className="px-4 pt-4 pb-8">
@@ -83,7 +95,19 @@ export function Settings() {
       <SectionLabel>Préférences</SectionLabel>
       <Group>
         {profileType === 'candidate' && (
-          <Row icon={BellRing} label="Alertes emploi" desc="Soyez notifié des offres qui vous correspondent" onClick={() => navigate(`${basePath}/job-alerts`)} />
+          <>
+            <Row icon={BellRing} label="Alertes emploi" desc="Soyez notifié des offres qui vous correspondent" onClick={() => navigate(`${basePath}/job-alerts`)} />
+            <div className="flex items-center gap-3 px-4 py-3.5">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-purple-50 text-purple-500">
+                <Users2 className="size-4" />
+              </span>
+              <span className="flex-1">
+                <span className="block text-sm font-medium text-text-primary">Vivier de talents</span>
+                <span className="block text-xs text-text-tertiary">Rester visible pour de futures opportunités après une candidature non retenue</span>
+              </span>
+              <Switch checked={talentPoolOptIn} onChange={handleTalentPoolToggle} />
+            </div>
+          </>
         )}
         <div className="flex items-center gap-3 px-4 py-3.5">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-orange-50 text-orange-500">

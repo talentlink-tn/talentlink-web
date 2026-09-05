@@ -40,6 +40,8 @@ import { Team } from '@/pages/recruiter/Team'
 import { CandidatesPipeline } from '@/pages/recruiter/CandidatesPipeline'
 import { Statistics } from '@/pages/recruiter/Statistics'
 import { SubscriptionAgreement } from '@/pages/recruiter/SubscriptionAgreement'
+import { RetentionChecks } from '@/pages/recruiter/RetentionChecks'
+import { TalentPool } from '@/pages/recruiter/TalentPool'
 
 import { CareerPage } from '@/pages/public/CareerPage'
 import { PublicJobDetail } from '@/pages/public/PublicJobDetail'
@@ -114,6 +116,8 @@ function AppRoutes() {
         <Route path="team" element={<Team />} />
         <Route path="settings" element={<Settings />} />
         <Route path="subscription-agreement" element={<SubscriptionAgreement />} />
+        <Route path="retention-checks" element={<RetentionChecks />} />
+        <Route path="talent-pool" element={<TalentPool />} />
       </Route>
 
       {/* Deliberately unlisted — not a tab on the public Login.tsx, no

@@ -19,6 +19,9 @@ export interface ApplicationReadRaw {
   notes: { id: string; author_user_id: string | null; body: string; created_at: string }[]
   match_score: number | null
   match_breakdown: MatchBreakdown | null
+  retention_status: 'retained' | 'left' | null
+  satisfaction_rating: number | null
+  satisfaction_comment: string | null
 }
 
 export async function listApplications(params?: {
@@ -55,6 +58,14 @@ export async function addApplicationNote(id: string, body: string): Promise<Appl
 
 export async function recomputeApplicationMatch(id: string): Promise<ApplicationReadRaw> {
   return api.post<ApplicationReadRaw>(`/applications/${id}/recompute-match`)
+}
+
+export async function listRetentionDueApplications(): Promise<ApplicationReadRaw[]> {
+  return api.get<ApplicationReadRaw[]>('/applications/retention-due')
+}
+
+export async function setApplicationRetention(id: string, status: 'retained' | 'left'): Promise<ApplicationReadRaw> {
+  return api.post<ApplicationReadRaw>(`/applications/${id}/retention`, { status })
 }
 
 const AVATAR_COLORS = ['#2F6FED', '#0F7A3D', '#0EA5A4', '#E4032E', '#7C3AED', '#1E56D6']

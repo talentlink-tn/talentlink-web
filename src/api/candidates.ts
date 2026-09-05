@@ -60,6 +60,7 @@ export interface CandidateProfileRaw {
   skills: { skill_name: string }[]
   languages: { language: string; proficiency: string }[]
   certifications: CertificationRaw[]
+  talent_pool_opt_in: boolean
 }
 
 export async function getMyCandidateProfile(): Promise<CandidateProfileRaw> {
@@ -72,6 +73,12 @@ export async function updateMyCandidateProfile(patch: Record<string, unknown>): 
 
 export async function uploadMyCv(file: File): Promise<CandidateProfileRaw> {
   return postFile<CandidateProfileRaw>('/candidates/me/cv', file)
+}
+
+// Templated from the candidate's existing profile data — see the
+// backend's cv_pdf_service.py docstring for why this isn't LLM-based.
+export async function generateMyCvPdf(): Promise<Blob> {
+  return getBlob('/candidates/me/cv/generate')
 }
 
 export async function uploadMyPhoto(file: File): Promise<CandidateProfileRaw> {
@@ -141,6 +148,14 @@ export async function getMyApplication(id: string): Promise<Application> {
 
 export async function withdrawMyApplication(id: string): Promise<Application> {
   const raw = await api.post<BackendApplicationForCandidate>(`/candidates/me/applications/${id}/withdraw`)
+  return mapApplicationForCandidate(raw)
+}
+
+export async function submitApplicationSurvey(id: string, rating: number, comment?: string): Promise<Application> {
+  const raw = await api.post<BackendApplicationForCandidate>(`/candidates/me/applications/${id}/survey`, {
+    rating,
+    comment: comment || undefined,
+  })
   return mapApplicationForCandidate(raw)
 }
 

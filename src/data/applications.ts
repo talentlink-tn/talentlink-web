@@ -15,6 +15,8 @@ export const applications: Application[] = [
       { key: 'decision', label: 'Décision', state: 'upcoming' },
     ],
     evaluation: { overall: 4.2, technical: 4.5, experience: 4.0, training: 4.0, softSkills: 4.5, languages: 4.0 },
+    satisfactionRating: null,
+    satisfactionComment: null,
     documents: [
       { id: 'd1', name: 'CV_Yassine_BenAmor.pdf', type: 'pdf', date: '15 Mai 2026' },
       { id: 'd2', name: 'Lettre_de_motivation.pdf', type: 'pdf', date: '15 Mai 2026' },
@@ -51,6 +53,8 @@ export const applications: Application[] = [
       { key: 'decision', label: 'Décision', state: 'upcoming' },
     ],
     evaluation: { overall: 3.8, technical: 4.0, experience: 3.5, training: 4.0, softSkills: 3.8, languages: 3.5 },
+    satisfactionRating: null,
+    satisfactionComment: null,
     documents: [
       { id: 'd1', name: 'CV_Yassine_BenAmor.pdf', type: 'pdf', date: '10 Mai 2026' },
       { id: 'd2', name: 'Portfolio_Design.pdf', type: 'pdf', date: '10 Mai 2026' },
@@ -70,6 +74,8 @@ export const applications: Application[] = [
       { key: 'decision', label: 'Décision', state: 'upcoming' },
     ],
     evaluation: { overall: 4.0, technical: 3.8, experience: 4.2, training: 4.0, softSkills: 4.0, languages: 4.0 },
+    satisfactionRating: null,
+    satisfactionComment: null,
     documents: [{ id: 'd1', name: 'CV_Yassine_BenAmor.pdf', type: 'pdf', date: '2 Mai 2026' }],
   },
   {
@@ -86,6 +92,8 @@ export const applications: Application[] = [
       { key: 'decision', label: 'Décision', state: 'upcoming' },
     ],
     evaluation: { overall: 3.5, technical: 3.5, experience: 3.2, training: 3.8, softSkills: 3.5, languages: 3.5 },
+    satisfactionRating: null,
+    satisfactionComment: null,
     documents: [{ id: 'd1', name: 'CV_Yassine_BenAmor.pdf', type: 'pdf', date: '28 Avr 2026' }],
   },
   {
@@ -102,6 +110,8 @@ export const applications: Application[] = [
       { key: 'decision', label: 'Décision', date: '2 Mai', state: 'done' },
     ],
     evaluation: { overall: 2.8, technical: 2.5, experience: 3.0, training: 3.0, softSkills: 2.8, languages: 2.8 },
+    satisfactionRating: null,
+    satisfactionComment: null,
     documents: [{ id: 'd1', name: 'CV_Yassine_BenAmor.pdf', type: 'pdf', date: '20 Avr 2026' }],
   },
 ]

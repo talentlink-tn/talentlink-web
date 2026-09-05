@@ -9,6 +9,7 @@ import { SkeletonBlock } from '@/components/shared/SkeletonRows'
 import {
   getMyCandidateProfile,
   uploadMyCv,
+  generateMyCvPdf,
   addExperience,
   updateExperience,
   deleteExperience,
@@ -58,6 +59,7 @@ export function MyCV() {
   const [openSection, setOpenSection] = useState<SectionKey | null>(null)
   const [profile, setProfile] = useState<CandidateProfileRaw | null>(null)
   const [uploading, setUploading] = useState(false)
+  const [generating, setGenerating] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [experienceSheet, setExperienceSheet] = useState<{ open: boolean; editing: ExperienceRaw | null }>({ open: false, editing: null })
@@ -91,6 +93,23 @@ export function MyCV() {
       showToast(error instanceof ApiError ? error.message : "Impossible d'envoyer le CV pour le moment.")
     } finally {
       setUploading(false)
+    }
+  }
+
+  const handleGenerateCv = async () => {
+    setGenerating(true)
+    try {
+      const blob = await generateMyCvPdf()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `CV-${profile?.first_name ?? 'candidat'}-${profile?.last_name ?? ''}.pdf`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      showToast(error instanceof ApiError ? error.message : 'Impossible de générer le CV.')
+    } finally {
+      setGenerating(false)
     }
   }
 
@@ -183,7 +202,7 @@ export function MyCV() {
           loading={uploading}
           onClick={() => fileInputRef.current?.click()}
         />
-        <ActionTile icon={Sparkles} label="Créer un nouveau CV" onClick={() => showToast('Bientôt disponible.')} />
+        <ActionTile icon={Sparkles} label="Générer mon CV (PDF)" loading={generating} onClick={handleGenerateCv} />
       </div>
 
       <div className="mt-5 rounded-2xl border border-surface-border bg-white p-4">

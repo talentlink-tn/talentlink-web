@@ -179,6 +179,8 @@ export interface BackendApplicationForCandidate {
     salary_min: number | null
     salary_max: number | null
   }
+  satisfaction_rating: number | null
+  satisfaction_comment: string | null
 }
 
 export function mapApplicationForCandidate(raw: BackendApplicationForCandidate): Application {
@@ -234,6 +236,8 @@ export function mapApplicationForCandidate(raw: BackendApplicationForCandidate):
     // when at least one value is non-zero.
     evaluation: { overall: 0, technical: 0, experience: 0, training: 0, softSkills: 0, languages: 0 },
     documents: [],
+    satisfactionRating: raw.satisfaction_rating,
+    satisfactionComment: raw.satisfaction_comment,
   }
 }
 
