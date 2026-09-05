@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Plus, Users, Eye, XCircle, Archive, RotateCcw, Pencil, Download } from 'lucide-react'
+import { Plus, Users, Eye, XCircle, Archive, RotateCcw, Pencil, Download, Share2 } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Sheet } from '@/components/ui/Sheet'
@@ -218,6 +218,20 @@ export function JobsManagement() {
     }
   }
 
+  const handleShareLinkedIn = async (job: ListItem) => {
+    if (job.status !== 'published') {
+      showToast("Le partage n'est disponible qu'une fois l'offre publiée.")
+      return
+    }
+    try {
+      const { public_url } = await shareJobOffer(job.id)
+      const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(public_url)}`
+      window.open(shareUrl, '_blank', 'noopener,noreferrer')
+    } catch (error) {
+      showToast(error instanceof ApiError ? error.message : "Impossible de partager l'offre.")
+    }
+  }
+
   const handleExportOffers = async () => {
     setExportingOffers(true)
     try {
@@ -304,6 +318,9 @@ export function JobsManagement() {
               </button>
               <button onClick={() => handlePreview(j)} title="Aperçu de l'offre" className="flex size-8 items-center justify-center rounded-lg border border-surface-border text-text-secondary hover:bg-surface-muted">
                 <Eye className="size-3.5" />
+              </button>
+              <button onClick={() => handleShareLinkedIn(j)} title="Partager sur LinkedIn" className="flex size-8 items-center justify-center rounded-lg border border-surface-border text-text-secondary hover:bg-surface-muted">
+                <Share2 className="size-3.5" />
               </button>
               {j.status === 'archived' ? (
                 <button

@@ -39,6 +39,7 @@ import { CompanyProfileEdit } from '@/pages/recruiter/CompanyProfileEdit'
 import { Team } from '@/pages/recruiter/Team'
 import { CandidatesPipeline } from '@/pages/recruiter/CandidatesPipeline'
 import { Statistics } from '@/pages/recruiter/Statistics'
+import { SubscriptionAgreement } from '@/pages/recruiter/SubscriptionAgreement'
 
 import { CareerPage } from '@/pages/public/CareerPage'
 import { PublicJobDetail } from '@/pages/public/PublicJobDetail'
@@ -112,6 +113,7 @@ function AppRoutes() {
         <Route path="profile/edit" element={<CompanyProfileEdit />} />
         <Route path="team" element={<Team />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="subscription-agreement" element={<SubscriptionAgreement />} />
       </Route>
 
       {/* Deliberately unlisted — not a tab on the public Login.tsx, no

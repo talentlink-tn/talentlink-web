@@ -13,7 +13,8 @@ import { changeApplicationStatus, listApplications, mapApplicationToRecruiterCan
 import { scheduleInterview, type InterviewReadRaw } from '@/api/interviews'
 import { downloadApplicationsXlsx } from '@/api/jobOffers'
 import type { BackendApplicationStatus } from '@/api/mappers'
-import type { RecruiterCandidate } from '@/types'
+import { educationLevelLabel, experienceLevelLabel } from '@/api/enums'
+import type { MatchBreakdown, RecruiterCandidate } from '@/types'
 import { cn } from '@/utils/cn'
 
 const columns: { key: RecruiterCandidate['stage']; label: string; tone: 'blue' | 'orange' | 'green' }[] = [
@@ -208,6 +209,8 @@ export function CandidatesPipeline() {
               <p className="text-2xl font-extrabold text-green-600">{selected.matchScore}%</p>
               <p className="text-xs text-text-secondary">de compatibilité avec le poste (score IA)</p>
             </div>
+
+            {selected.matchBreakdown && <MatchBreakdownDetail breakdown={selected.matchBreakdown} />}
             <div className="flex gap-2">
               <Button variant="outline" fullWidth onClick={() => navigate('/recruiter/messages')}>
                 <MessageCircle className="size-[18px]" />
@@ -293,6 +296,92 @@ export function CandidatesPipeline() {
           </div>
         )}
       </Sheet>
+    </div>
+  )
+}
+
+// Rien de neuf ici — le matching détaillé est déjà calculé et renvoyé par
+// le backend (MatchBreakdown) pour chaque candidature, il n'était juste
+// jamais affiché côté recruteur.
+const CRITERIA: { key: keyof MatchBreakdown; label: string }[] = [
+  { key: 'skills_score', label: 'Compétences' },
+  { key: 'experience_score', label: 'Expérience' },
+  { key: 'education_score', label: 'Formation' },
+  { key: 'languages_score', label: 'Langues' },
+  { key: 'mobility_score', label: 'Mobilité' },
+]
+
+function MatchBreakdownDetail({ breakdown }: { breakdown: MatchBreakdown }) {
+  return (
+    <div className="space-y-3.5 rounded-xl border border-surface-border p-3.5">
+      <p className="text-xs font-bold tracking-wide text-text-tertiary uppercase">Analyse du matching</p>
+
+      <div className="space-y-2">
+        {CRITERIA.map(({ key, label }) => {
+          const score = Math.round(breakdown[key] as number)
+          return (
+            <div key={key} className="flex items-center gap-2.5">
+              <span className="w-20 shrink-0 text-xs text-text-secondary">{label}</span>
+              <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-muted">
+                <span
+                  className={cn('block h-full rounded-full', score >= 70 ? 'bg-green-500' : score >= 40 ? 'bg-orange-400' : 'bg-red-400')}
+                  style={{ width: `${score}%` }}
+                />
+              </span>
+              <span className="w-9 shrink-0 text-right text-xs font-semibold text-text-primary">{score}%</span>
+            </div>
+          )
+        })}
+      </div>
+
+      {breakdown.matched_skills.length > 0 && (
+        <div>
+          <p className="mb-1.5 text-xs font-medium text-text-secondary">Compétences correspondantes</p>
+          <div className="flex flex-wrap gap-1.5">
+            {breakdown.matched_skills.map((s) => (
+              <Badge key={s} tone="green">{s}</Badge>
+            ))}
+          </div>
+        </div>
+      )}
+      {(breakdown.missing_mandatory_skills.length > 0 || breakdown.missing_optional_skills.length > 0) && (
+        <div>
+          <p className="mb-1.5 text-xs font-medium text-text-secondary">Compétences manquantes</p>
+          <div className="flex flex-wrap gap-1.5">
+            {breakdown.missing_mandatory_skills.map((s) => (
+              <Badge key={s} tone="red">{s}</Badge>
+            ))}
+            {breakdown.missing_optional_skills.map((s) => (
+              <Badge key={s} tone="orange">{s}</Badge>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="grid grid-cols-2 gap-2 text-xs">
+        <div className="rounded-lg bg-surface-muted p-2.5">
+          <p className="text-text-tertiary">Expérience candidat</p>
+          <p className="font-semibold text-text-primary">{breakdown.candidate_years_experience} ans · requis : {experienceLevelLabel(breakdown.required_experience_level)}</p>
+        </div>
+        <div className="rounded-lg bg-surface-muted p-2.5">
+          <p className="text-text-tertiary">Formation candidat</p>
+          <p className="font-semibold text-text-primary">{educationLevelLabel(breakdown.candidate_education_level)} · requis : {educationLevelLabel(breakdown.required_education_level)}</p>
+        </div>
+      </div>
+
+      {(breakdown.matched_languages.length > 0 || breakdown.missing_languages.length > 0) && (
+        <div>
+          <p className="mb-1.5 text-xs font-medium text-text-secondary">Langues</p>
+          <div className="flex flex-wrap gap-1.5">
+            {breakdown.matched_languages.map((l) => (
+              <Badge key={l} tone="green">{l}</Badge>
+            ))}
+            {breakdown.missing_languages.map((l) => (
+              <Badge key={l} tone="red">{l}</Badge>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

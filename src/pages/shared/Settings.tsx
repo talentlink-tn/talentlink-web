@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  User, Lock, Mail, Trash2, Bell, BellRing, Globe, Moon, MapPin, Info, HelpCircle, Shield, ChevronRight, LogOut,
+  User, Lock, Mail, Trash2, Bell, BellRing, Globe, Moon, MapPin, Info, HelpCircle, Shield, ChevronRight, LogOut, FileSignature,
 } from 'lucide-react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Avatar } from '@/components/ui/Avatar'
@@ -106,6 +106,14 @@ export function Settings() {
         <Row icon={HelpCircle} label="Aide et support" desc="FAQ et assistance" onClick={() => navigate(`${basePath}/help`)} />
         <Row icon={Shield} label="Conditions d'utilisation" desc="CGU de la plateforme" onClick={() => navigate('/terms')} />
         <Row icon={Shield} label="Politique de confidentialité" desc="Comment vos données sont traitées" onClick={() => navigate('/privacy-policy')} />
+        {profileType === 'recruiter' && (
+          <Row
+            icon={FileSignature}
+            label="Convention d'abonnement annuel"
+            desc="Document imprimable"
+            onClick={() => navigate(`${basePath}/subscription-agreement`)}
+          />
+        )}
       </Group>
 
       <Button

@@ -50,10 +50,10 @@ export const recruiterProfile = {
 }
 
 export const recruiterCandidates: RecruiterCandidate[] = [
-  { id: 'c1', name: 'Yassine Kheribi', avatarColor: '#2F6FED', role: 'Développeur Full Stack', stage: 'new', appliedAt: 'il y a 2j', matchScore: 92 },
-  { id: 'c2', name: 'Meriem Trabelsi', avatarColor: '#7C3AED', role: 'UX/UI Designer', stage: 'new', appliedAt: 'il y a 3j', matchScore: 85 },
-  { id: 'c3', name: 'Sarah Jendoubi', avatarColor: '#EA580C', role: 'Chef de projet Digital', stage: 'interview', appliedAt: 'il y a 5j', matchScore: 88 },
-  { id: 'c4', name: 'Mehdi Bouzidi', avatarColor: '#0EA5A4', role: 'Data Analyst', stage: 'interview', appliedAt: 'il y a 6j', matchScore: 79 },
-  { id: 'c5', name: 'Rania Slimani', avatarColor: '#16A34A', role: 'Développeur Full Stack', stage: 'final', appliedAt: 'il y a 1 sem', matchScore: 95 },
-  { id: 'c6', name: 'Ahmed Ben Salah', avatarColor: '#DC2626', role: 'DevOps Engineer', stage: 'new', appliedAt: 'il y a 8j', matchScore: 74 },
+  { id: 'c1', name: 'Yassine Kheribi', avatarColor: '#2F6FED', role: 'Développeur Full Stack', stage: 'new', appliedAt: 'il y a 2j', matchScore: 92, matchBreakdown: null },
+  { id: 'c2', name: 'Meriem Trabelsi', avatarColor: '#7C3AED', role: 'UX/UI Designer', stage: 'new', appliedAt: 'il y a 3j', matchScore: 85, matchBreakdown: null },
+  { id: 'c3', name: 'Sarah Jendoubi', avatarColor: '#EA580C', role: 'Chef de projet Digital', stage: 'interview', appliedAt: 'il y a 5j', matchScore: 88, matchBreakdown: null },
+  { id: 'c4', name: 'Mehdi Bouzidi', avatarColor: '#0EA5A4', role: 'Data Analyst', stage: 'interview', appliedAt: 'il y a 6j', matchScore: 79, matchBreakdown: null },
+  { id: 'c5', name: 'Rania Slimani', avatarColor: '#16A34A', role: 'Développeur Full Stack', stage: 'final', appliedAt: 'il y a 1 sem', matchScore: 95, matchBreakdown: null },
+  { id: 'c6', name: 'Ahmed Ben Salah', avatarColor: '#DC2626', role: 'DevOps Engineer', stage: 'new', appliedAt: 'il y a 8j', matchScore: 74, matchBreakdown: null },
 ]

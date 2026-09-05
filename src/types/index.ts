@@ -151,4 +151,25 @@ export interface RecruiterCandidate {
   stage: 'new' | 'interview' | 'final'
   appliedAt: string
   matchScore: number
+  matchBreakdown: MatchBreakdown | null
+}
+
+// Mirrors the backend's MatchBreakdown schema (module 4) — a
+// deterministic, explainable per-criterion match score, all 0-100.
+export interface MatchBreakdown {
+  overall_score: number
+  skills_score: number
+  experience_score: number
+  education_score: number
+  languages_score: number
+  mobility_score: number
+  matched_skills: string[]
+  missing_mandatory_skills: string[]
+  missing_optional_skills: string[]
+  candidate_years_experience: number
+  required_experience_level: 'junior' | 'confirmed' | 'senior' | 'expert'
+  candidate_education_level: 'none' | 'bac' | 'bac2' | 'bac3' | 'bac5' | 'doctorate'
+  required_education_level: 'none' | 'bac' | 'bac2' | 'bac3' | 'bac5' | 'doctorate'
+  matched_languages: string[]
+  missing_languages: string[]
 }

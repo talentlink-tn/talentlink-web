@@ -87,6 +87,40 @@ function RecruiterProfile({
             Modifier
           </button>
         </div>
+        {(company?.dg_name || company?.drh_name || company?.tax_id || company?.address || company?.industry) && (
+          <dl className="mt-3.5 grid grid-cols-2 gap-x-3 gap-y-2 border-t border-surface-border pt-3.5 text-xs">
+            {company?.dg_name && (
+              <div>
+                <dt className="text-text-tertiary">DG / gérant</dt>
+                <dd className="truncate font-medium text-text-primary">{company.dg_name}{company.dg_contact ? ` · ${company.dg_contact}` : ''}</dd>
+              </div>
+            )}
+            {company?.drh_name && (
+              <div>
+                <dt className="text-text-tertiary">DRH</dt>
+                <dd className="truncate font-medium text-text-primary">{company.drh_name}{company.drh_contact ? ` · ${company.drh_contact}` : ''}</dd>
+              </div>
+            )}
+            {company?.tax_id && (
+              <div>
+                <dt className="text-text-tertiary">Matricule fiscale</dt>
+                <dd className="truncate font-medium text-text-primary">{company.tax_id}</dd>
+              </div>
+            )}
+            {company?.industry && (
+              <div>
+                <dt className="text-text-tertiary">Secteur d'activité</dt>
+                <dd className="truncate font-medium text-text-primary">{company.industry}</dd>
+              </div>
+            )}
+            {company?.address && (
+              <div className="col-span-2">
+                <dt className="text-text-tertiary">Adresse</dt>
+                <dd className="truncate font-medium text-text-primary">{company.address}</dd>
+              </div>
+            )}
+          </dl>
+        )}
       </div>
 
       <div className="mt-6 space-y-1">

@@ -1,6 +1,6 @@
 import { api } from './client'
 import type { BackendApplicationStatus } from './mappers'
-import type { RecruiterCandidate } from '@/types'
+import type { MatchBreakdown, RecruiterCandidate } from '@/types'
 
 export interface ApplicationReadRaw {
   id: string
@@ -18,7 +18,7 @@ export interface ApplicationReadRaw {
   status_history: { from_status: string | null; to_status: string; changed_at: string; actor_type: string; actor_user_id: string | null }[]
   notes: { id: string; author_user_id: string | null; body: string; created_at: string }[]
   match_score: number | null
-  match_breakdown: unknown | null
+  match_breakdown: MatchBreakdown | null
 }
 
 export async function listApplications(params?: {
@@ -90,5 +90,6 @@ export function mapApplicationToRecruiterCandidate(raw: ApplicationReadRaw): Rec
     stage: STAGE_FOR_STATUS[raw.status],
     appliedAt: raw.created_at,
     matchScore: raw.match_score ?? 0,
+    matchBreakdown: raw.match_breakdown,
   }
 }

@@ -1,5 +1,10 @@
 import { api, postFile } from './client'
 
+export interface CompanyGalleryPhotoRaw {
+  id: string
+  url: string
+}
+
 export interface CompanyProfileRaw {
   id: string
   slug: string
@@ -7,6 +12,16 @@ export interface CompanyProfileRaw {
   description: string | null
   logo_url: string | null
   brand_color: string | null
+  dg_name: string | null
+  dg_contact: string | null
+  drh_name: string | null
+  drh_contact: string | null
+  tax_id: string | null
+  address: string | null
+  industry: string | null
+  evp_culture: string | null
+  evp_benefits: string | null
+  gallery_photos: CompanyGalleryPhotoRaw[]
 }
 
 export async function getMyCompany(): Promise<CompanyProfileRaw> {
@@ -18,6 +33,15 @@ export async function updateMyCompany(patch: Partial<{
   description: string
   logo_url: string
   brand_color: string
+  dg_name: string
+  dg_contact: string
+  drh_name: string
+  drh_contact: string
+  tax_id: string
+  address: string
+  industry: string
+  evp_culture: string
+  evp_benefits: string
 }>): Promise<CompanyProfileRaw> {
   return api.patch<CompanyProfileRaw>('/companies/me', patch)
 }
@@ -27,6 +51,14 @@ export async function updateMyCompany(patch: Partial<{
 // split as the candidate side's uploadMyPhoto vs. updateMyCandidateProfile.
 export async function uploadMyLogo(file: File): Promise<CompanyProfileRaw> {
   return postFile<CompanyProfileRaw>('/companies/me/logo', file)
+}
+
+export async function uploadGalleryPhoto(file: File): Promise<CompanyProfileRaw> {
+  return postFile<CompanyProfileRaw>('/companies/me/gallery', file)
+}
+
+export async function deleteGalleryPhoto(photoId: string): Promise<CompanyProfileRaw> {
+  return api.delete<CompanyProfileRaw>(`/companies/me/gallery/${photoId}`)
 }
 
 export interface TeamMemberRaw {
