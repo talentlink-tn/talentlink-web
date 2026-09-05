@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { User, Briefcase, Building2, Lock, ArrowRight } from 'lucide-react'
+import { User, Building2, Lock, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { useApp } from '@/context/AppContext'
 import { ApiError } from '@/api/client'
@@ -34,14 +34,6 @@ const profiles: {
     chips: ["Recherche d'emploi", 'Candidatures', 'Mon CV'],
   },
   {
-    type: 'employee',
-    title: 'Employé',
-    description: 'Je suis employé et souhaite accéder à mes outils et informations RH.',
-    icon: Briefcase,
-    tint: 'bg-green-50 text-green-600',
-    chips: ['Pointage', 'Congés', 'Documents', 'Formations'],
-  },
-  {
     type: 'recruiter',
     title: 'RH / Recruteur',
     description: 'Je recrute, gère les talents et suis les processus RH de l’entreprise.',
@@ -63,21 +55,13 @@ function slugify(value: string): string {
 export function ChooseProfile() {
   const location = useLocation() as { state?: RegisterState }
   const navigate = useNavigate()
-  const { registerCompanyUser, registerCandidateUser, loginEmployeeDemo, showToast } = useApp()
+  const { registerCompanyUser, registerCandidateUser, showToast } = useApp()
   const data = location.state ?? {}
   const [selected, setSelected] = useState<ProfileType>(data.type ?? 'candidate')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const handleContinue = async () => {
-    if (selected === 'employee') {
-      // No backend module covers this profile (see AppContext) — stays a
-      // local-only demo regardless of what was typed on the form before.
-      loginEmployeeDemo()
-      navigate('/app', { replace: true })
-      return
-    }
-
     if (!data.email || !data.password) {
       // Reached directly (e.g. browser back/forward) without the form
       // data this screen needs to actually create an account.

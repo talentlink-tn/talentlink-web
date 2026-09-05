@@ -1,4 +1,4 @@
-export type ProfileType = 'candidate' | 'employee' | 'recruiter'
+export type ProfileType = 'candidate' | 'recruiter'
 
 export type ContractType = 'CDI' | 'CDD' | 'Stage' | 'Freelance' | 'Alternance'
 export type WorkMode = 'Sur site' | 'Hybride' | 'Télétravail'

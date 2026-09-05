@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Avatar } from '@/components/ui/Avatar'
+import { CompanyLogo } from '@/components/shared/CompanyLogo'
 import { Switch } from '@/components/ui/Switch'
 import { Button } from '@/components/ui/Button'
 import { candidateProfile, recruiterProfile } from '@/data/profile'
@@ -21,12 +22,19 @@ export function Settings() {
   const [pushEnabled, setPushEnabled] = useState(true)
   const [name, setName] = useState(profileType === 'recruiter' ? recruiterProfile.name : `${candidateProfile.firstName} ${candidateProfile.lastName}`)
   const [subtitle, setSubtitle] = useState(profileType === 'recruiter' ? recruiterProfile.title : candidateProfile.title)
-  const [avatarSrc, setAvatarSrc] = useState<string | undefined>(profileType === 'recruiter' ? recruiterProfile.avatar : candidateProfile.avatar)
+  const [avatarSrc, setAvatarSrc] = useState<string | undefined>(profileType === 'recruiter' ? undefined : candidateProfile.avatar)
+  const [brandColor, setBrandColor] = useState('#2F6FED')
 
   useEffect(() => {
     const email = getAuthToken()?.email
     if (profileType === 'recruiter') {
-      getMyCompany().then((c) => setSubtitle(c.name)).catch(() => {})
+      getMyCompany()
+        .then((c) => {
+          setSubtitle(c.name)
+          if (c.logo_url) setAvatarSrc(resolveUploadUrl(c.logo_url))
+          if (c.brand_color) setBrandColor(c.brand_color)
+        })
+        .catch(() => {})
       if (email) {
         listMyTeam()
           .then((team) => {
@@ -52,7 +60,11 @@ export function Settings() {
       <p className="mt-4 mb-4 text-sm text-text-secondary">Gérez votre compte et vos préférences</p>
 
       <button onClick={() => navigate(`${basePath}/profile`)} className="flex w-full items-center gap-3 rounded-2xl border border-surface-border bg-white p-3.5">
-        <Avatar name={name} src={avatarSrc} size={52} />
+        {profileType === 'recruiter' ? (
+          <CompanyLogo name={subtitle} color={brandColor} src={avatarSrc} size={52} />
+        ) : (
+          <Avatar name={name} src={avatarSrc} size={52} />
+        )}
         <span className="min-w-0 flex-1 text-left">
           <span className="block truncate text-sm font-bold text-text-primary">{name}</span>
           <span className="block truncate text-xs text-text-secondary">{subtitle}</span>

@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { LayoutDashboard, Briefcase, Users, BarChart3, Settings, LogOut, Bell } from 'lucide-react'
 import { Logo } from './Logo'
-import { Avatar } from '@/components/ui/Avatar'
+import { CompanyLogo } from '@/components/shared/CompanyLogo'
 import { useApp } from '@/context/AppContext'
 import { getMyCompany, listMyTeam } from '@/api/companies'
-import { getAuthToken } from '@/api/client'
+import { getAuthToken, resolveUploadUrl } from '@/api/client'
 import { recruiterProfile } from '@/data/profile'
 import { cn } from '@/utils/cn'
 
@@ -21,9 +21,17 @@ export function RecruiterSidebar() {
   const { logout, unreadNotificationsCount } = useApp()
   const [companyName, setCompanyName] = useState(recruiterProfile.title)
   const [userName, setUserName] = useState(recruiterProfile.name)
+  const [logoSrc, setLogoSrc] = useState<string | undefined>(undefined)
+  const [brandColor, setBrandColor] = useState('#2F6FED')
 
   useEffect(() => {
-    getMyCompany().then((c) => setCompanyName(c.name)).catch(() => {})
+    getMyCompany()
+      .then((c) => {
+        setCompanyName(c.name)
+        if (c.logo_url) setLogoSrc(resolveUploadUrl(c.logo_url))
+        if (c.brand_color) setBrandColor(c.brand_color)
+      })
+      .catch(() => {})
     // No "who am I" endpoint distinct from the team list — resolve the
     // logged-in user's own name by matching the email cached at login
     // (api/client.ts's StoredAuth.email) against the team roster.
@@ -56,7 +64,7 @@ export function RecruiterSidebar() {
       </div>
 
       <div className="mx-4 mb-4 flex items-center gap-3 rounded-2xl bg-surface-muted p-3">
-        <Avatar name={userName} src={recruiterProfile.avatar} size={40} />
+        <CompanyLogo name={companyName} color={brandColor} src={logoSrc} size={40} />
         <span className="min-w-0">
           <span className="block truncate text-sm font-semibold text-text-primary">{userName}</span>
           <span className="block truncate text-xs text-text-secondary">{companyName}</span>

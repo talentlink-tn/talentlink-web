@@ -18,6 +18,7 @@ import {
   listMyJobOffers,
   publishJobOffer,
   restoreJobOffer,
+  shareJobOffer,
   updateJobOffer,
   type JobOfferReadRaw,
 } from '@/api/jobOffers'
@@ -201,6 +202,22 @@ export function JobsManagement() {
     }
   }
 
+  const handlePreview = async (job: ListItem) => {
+    // The public page only ever serves published offers (see the
+    // backend's public job-offer endpoint) — a draft/scheduled/closed/
+    // archived offer has no live page to preview yet.
+    if (job.status !== 'published') {
+      showToast("L'aperçu public n'est disponible qu'une fois l'offre publiée.")
+      return
+    }
+    try {
+      const { public_url } = await shareJobOffer(job.id)
+      window.open(public_url, '_blank', 'noopener,noreferrer')
+    } catch (error) {
+      showToast(error instanceof ApiError ? error.message : "Impossible d'ouvrir l'aperçu.")
+    }
+  }
+
   const handleExportOffers = async () => {
     setExportingOffers(true)
     try {
@@ -285,7 +302,7 @@ export function JobsManagement() {
               >
                 <Pencil className="size-3.5" />
               </button>
-              <button onClick={() => showToast('Aperçu de l’offre')} className="flex size-8 items-center justify-center rounded-lg border border-surface-border text-text-secondary hover:bg-surface-muted">
+              <button onClick={() => handlePreview(j)} title="Aperçu de l'offre" className="flex size-8 items-center justify-center rounded-lg border border-surface-border text-text-secondary hover:bg-surface-muted">
                 <Eye className="size-3.5" />
               </button>
               {j.status === 'archived' ? (

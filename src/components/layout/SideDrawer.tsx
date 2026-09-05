@@ -32,9 +32,8 @@ const bottomLinks = [
 export function SideDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const navigate = useNavigate()
   const { logout, authKind } = useApp()
-  // The "employee" demo profile has no backend (see AppContext) — it
-  // keeps showing the mocked candidateProfile; a real candidate session
-  // fetches its own name instead.
+  // Defaults to the mocked candidateProfile until a real candidate
+  // session's own name/title/photo are fetched below.
   const [displayName, setDisplayName] = useState(`${candidateProfile.firstName} ${candidateProfile.lastName}`)
   const [displayTitle, setDisplayTitle] = useState(candidateProfile.title)
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(candidateProfile.avatar)

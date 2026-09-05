@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { AppProvider, useApp } from '@/context/AppContext'
+import { AppProvider } from '@/context/AppContext'
 import { Toast } from '@/components/ui/Toast'
 import { AppShell } from '@/layouts/AppShell'
 import { RecruiterShell } from '@/layouts/RecruiterShell'
@@ -13,7 +13,6 @@ import { ResetPassword } from '@/pages/auth/ResetPassword'
 import { ChooseProfile } from '@/pages/auth/ChooseProfile'
 
 import { Dashboard } from '@/pages/candidate/Dashboard'
-import { EmployeeDashboard } from '@/pages/employee/EmployeeDashboard'
 import { JobSearch } from '@/pages/candidate/JobSearch'
 import { JobDetail } from '@/pages/candidate/JobDetail'
 import { Applications } from '@/pages/candidate/Applications'
@@ -34,10 +33,6 @@ import { MyCV } from '@/pages/shared/MyCV'
 import { Settings } from '@/pages/shared/Settings'
 import { Help } from '@/pages/shared/Help'
 
-import { LeaveManagement } from '@/pages/employee/LeaveManagement'
-import { TimeClock } from '@/pages/employee/TimeClock'
-import { EmployeeDocuments } from '@/pages/employee/EmployeeDocuments'
-
 import { RecruiterDashboard } from '@/pages/recruiter/RecruiterDashboard'
 import { JobsManagement } from '@/pages/recruiter/JobsManagement'
 import { CompanyProfileEdit } from '@/pages/recruiter/CompanyProfileEdit'
@@ -57,10 +52,6 @@ import { AdminDashboard } from '@/pages/admin/AdminDashboard'
 import { AdminCompanies } from '@/pages/admin/AdminCompanies'
 import { AdminJobOffers } from '@/pages/admin/AdminJobOffers'
 
-function HomeDashboard() {
-  const { profileType } = useApp()
-  return profileType === 'employee' ? <EmployeeDashboard /> : <Dashboard />
-}
 
 function AppRoutes() {
   return (
@@ -88,7 +79,7 @@ function AppRoutes() {
       <Route path="/jobs/:publicSlug" element={<PublicJobDetail />} />
 
       <Route path="/app" element={<AppShell />}>
-        <Route index element={<HomeDashboard />} />
+        <Route index element={<Dashboard />} />
         <Route path="jobs" element={<JobSearch />} />
         <Route path="jobs/:jobId" element={<JobDetail />} />
         <Route path="applications" element={<Applications />} />
@@ -107,9 +98,6 @@ function AppRoutes() {
         <Route path="profile/cv" element={<MyCV />} />
         <Route path="settings" element={<Settings />} />
         <Route path="help" element={<Help />} />
-        <Route path="leave" element={<LeaveManagement />} />
-        <Route path="clock" element={<TimeClock />} />
-        <Route path="documents" element={<EmployeeDocuments />} />
       </Route>
 
       <Route path="/recruiter" element={<RecruiterShell />}>

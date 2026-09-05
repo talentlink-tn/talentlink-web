@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ChevronLeft, User, Mail, Phone, Lock, Check, Briefcase, Building2 } from 'lucide-react'
+import { ChevronLeft, User, Mail, Phone, Lock, Check, Building2 } from 'lucide-react'
 import { AuthBrandPanel } from '@/components/layout/AuthBrandPanel'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -9,7 +9,6 @@ import type { ProfileType } from '@/types'
 
 const tabs: { type: ProfileType; label: string; icon: typeof User }[] = [
   { type: 'candidate', label: 'Candidat', icon: User },
-  { type: 'employee', label: 'Employé', icon: Briefcase },
   { type: 'recruiter', label: 'RH / Recruteur', icon: Building2 },
 ]
 

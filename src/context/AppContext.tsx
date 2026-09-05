@@ -41,11 +41,10 @@ interface AppContextValue {
   markOnboardingSeen: () => void
 
   isAuthenticated: boolean
-  authKind: AuthKind | 'employee' | null
+  authKind: AuthKind | null
   profileType: ProfileType | null
   loginCompanyUser: (email: string, password: string) => Promise<void>
   loginCandidateUser: (email: string, password: string) => Promise<void>
-  loginEmployeeDemo: () => void
   registerCompanyUser: (input: { companyName: string; companySlug: string; email: string; password: string; fullName: string }) => Promise<void>
   registerCandidateUser: (input: { email: string; password: string; firstName: string; lastName: string }) => Promise<void>
   logout: () => void
@@ -81,12 +80,9 @@ const AppContext = createContext<AppContextValue | null>(null)
 export function AppProvider({ children }: { children: ReactNode }) {
   const [onboardingSeen, setOnboardingSeen] = useLocalStorage('tl_onboarding_seen', false)
   const [favorites, setFavorites] = useLocalStorage<string[]>('tl_favorites', [])
-  const [employeeDemo, setEmployeeDemo] = useLocalStorage('tl_employee_demo', false)
 
   const stored = getAuthToken()
-  const [authKind, setAuthKind] = useState<AuthKind | 'employee' | null>(
-    employeeDemo ? 'employee' : (stored?.kind ?? null),
-  )
+  const [authKind, setAuthKind] = useState<AuthKind | null>(stored?.kind ?? null)
 
   const [applications, setApplications] = useState<Application[]>([])
   const [applicationsLoading, setApplicationsLoading] = useState(false)
@@ -96,7 +92,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState<string | null>(null)
 
   const isAuthenticated = authKind !== null
-  const profileType: ProfileType | null = authKind === 'company' ? 'recruiter' : authKind === 'candidate' ? 'candidate' : authKind === 'employee' ? 'employee' : null
+  const profileType: ProfileType | null = authKind === 'company' ? 'recruiter' : authKind === 'candidate' ? 'candidate' : null
 
   const showToast = useCallback((message: string) => {
     setToast(message)
@@ -159,21 +155,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
     loginCompanyUser: async (email, password) => {
       await loginCompany(email, password)
-      setEmployeeDemo(false)
       setAuthKind('company')
     },
     loginCandidateUser: async (email, password) => {
       await loginCandidate(email, password)
-      setEmployeeDemo(false)
       setAuthKind('candidate')
-    },
-    loginEmployeeDemo: () => {
-      // No backend module covers payroll/leave/time-clock (out of the
-      // original 7-module plan) — this profile stays a local-only demo,
-      // never hits the API.
-      clearAuthToken()
-      setEmployeeDemo(true)
-      setAuthKind('employee')
     },
 
     registerCompanyUser: async (input) => {
@@ -184,18 +170,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
         adminPassword: input.password,
         adminFullName: input.fullName,
       })
-      setEmployeeDemo(false)
       setAuthKind('company')
     },
     registerCandidateUser: async (input) => {
       await registerCandidate(input)
-      setEmployeeDemo(false)
       setAuthKind('candidate')
     },
 
     logout: () => {
       clearAuthToken()
-      setEmployeeDemo(false)
       setAuthKind(null)
       setApplications([])
       setNotifications([])

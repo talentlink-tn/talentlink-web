@@ -54,7 +54,12 @@ function RecruiterProfile({
   return (
     <div className="px-4 pt-4 pb-8 lg:mx-auto lg:max-w-2xl lg:px-0">
       <div className="flex items-center gap-4">
-        <Avatar name={userName} src={recruiterProfile.avatar} size={72} />
+        <CompanyLogo
+          name={company?.name ?? userName}
+          color={company?.brand_color || '#2F6FED'}
+          src={company?.logo_url ? resolveUploadUrl(company.logo_url) : undefined}
+          size={72}
+        />
         <div>
           <h1 className="text-lg font-bold text-text-primary lg:text-xl">{userName}</h1>
           <p className="text-sm text-text-secondary">{company?.name || recruiterProfile.title}</p>

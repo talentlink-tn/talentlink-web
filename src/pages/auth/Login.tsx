@@ -11,10 +11,10 @@ import type { ProfileType } from '@/types'
 
 export function Login() {
   const navigate = useNavigate()
-  const { loginCompanyUser, loginCandidateUser, loginEmployeeDemo, showToast } = useApp()
+  const { loginCompanyUser, loginCandidateUser, showToast } = useApp()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [asType, setAsType] = useState<Exclude<ProfileType, 'employee'>>('candidate')
+  const [asType, setAsType] = useState<ProfileType>('candidate')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -36,12 +36,6 @@ export function Login() {
     } finally {
       setLoading(false)
     }
-  }
-
-  const quickEmployeeLogin = () => {
-    loginEmployeeDemo()
-    showToast('Connexion réussie !')
-    navigate('/app', { replace: true })
   }
 
   return (
@@ -107,19 +101,6 @@ export function Login() {
           Se connecter
         </Button>
       </form>
-
-      <div className="my-6 flex items-center gap-3">
-        <span className="h-px flex-1 bg-surface-border" />
-        <span className="text-xs text-text-tertiary">ou</span>
-        <span className="h-px flex-1 bg-surface-border" />
-      </div>
-
-      <div className="rounded-xl bg-surface-muted p-3 text-center text-xs text-text-tertiary">
-        Profil « Employé » — démo visuelle uniquement, sans compte réel :{' '}
-        <button onClick={quickEmployeeLogin} className="font-semibold text-brand-blue-600">
-          Continuer en tant qu’employé
-        </button>
-      </div>
 
       <p className="mt-6 text-center text-sm text-text-secondary">
         Vous n’avez pas de compte ?{' '}
