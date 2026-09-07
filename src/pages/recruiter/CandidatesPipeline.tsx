@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { ArrowRight, CalendarPlus, Download, MessageCircle, XCircle } from 'lucide-react'
+import { ArrowRight, CalendarPlus, Download, FileText, MessageCircle, XCircle } from 'lucide-react'
 import { Avatar } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/Input'
 import { Sheet } from '@/components/ui/Sheet'
 import { useApp } from '@/context/AppContext'
 import { SkeletonCompactRows } from '@/components/shared/SkeletonRows'
-import { ApiError } from '@/api/client'
+import { ApiError, resolveUploadUrl } from '@/api/client'
 import { changeApplicationStatus, listApplications, mapApplicationToRecruiterCandidate } from '@/api/applications'
 import { scheduleInterview, type InterviewReadRaw } from '@/api/interviews'
 import { downloadApplicationsXlsx } from '@/api/jobOffers'
@@ -205,6 +205,31 @@ export function CandidatesPipeline() {
                 <p className="text-sm font-bold text-text-primary">{selected.role}</p>
               </div>
             </div>
+
+            {selected.cvSnapshotUrl ? (
+              <a
+                href={resolveUploadUrl(selected.cvSnapshotUrl)}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-3 rounded-xl border border-surface-border bg-white p-3.5 transition-colors hover:border-brand-blue-200 hover:bg-brand-blue-50/40"
+              >
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-500">
+                  <FileText className="size-[18px]" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-semibold text-text-primary">
+                    {selected.cvSnapshotFilename ?? 'CV.pdf'}
+                  </span>
+                  <span className="block text-xs text-text-tertiary">Voir / télécharger le CV</span>
+                </span>
+                <Download className="size-4 shrink-0 text-text-tertiary" />
+              </a>
+            ) : (
+              <div className="rounded-xl border border-dashed border-surface-border p-3.5 text-center text-xs text-text-tertiary">
+                Aucun CV disponible pour cette candidature.
+              </div>
+            )}
+
             <div className="rounded-xl bg-surface-muted p-3.5 text-center">
               <p className="text-2xl font-extrabold text-green-600">{selected.matchScore}%</p>
               <p className="text-xs text-text-secondary">de compatibilité avec le poste (score IA)</p>

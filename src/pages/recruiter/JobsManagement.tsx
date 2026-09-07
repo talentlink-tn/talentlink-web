@@ -210,10 +210,16 @@ export function JobsManagement() {
       showToast("L'aperçu public n'est disponible qu'une fois l'offre publiée.")
       return
     }
+    // Opened synchronously (before the await below) so the browser still
+    // attributes it to the click — opening it after an awaited network
+    // call is what popup blockers silently swallow.
+    const previewWindow = window.open('', '_blank', 'noopener,noreferrer')
     try {
       const { public_url } = await shareJobOffer(job.id)
-      window.open(public_url, '_blank', 'noopener,noreferrer')
+      if (previewWindow) previewWindow.location.href = public_url
+      else window.open(public_url, '_blank', 'noopener,noreferrer')
     } catch (error) {
+      previewWindow?.close()
       showToast(error instanceof ApiError ? error.message : "Impossible d'ouvrir l'aperçu.")
     }
   }
@@ -223,11 +229,14 @@ export function JobsManagement() {
       showToast("Le partage n'est disponible qu'une fois l'offre publiée.")
       return
     }
+    const shareWindow = window.open('', '_blank', 'noopener,noreferrer')
     try {
       const { public_url } = await shareJobOffer(job.id)
       const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(public_url)}`
-      window.open(shareUrl, '_blank', 'noopener,noreferrer')
+      if (shareWindow) shareWindow.location.href = shareUrl
+      else window.open(shareUrl, '_blank', 'noopener,noreferrer')
     } catch (error) {
+      shareWindow?.close()
       showToast(error instanceof ApiError ? error.message : "Impossible de partager l'offre.")
     }
   }

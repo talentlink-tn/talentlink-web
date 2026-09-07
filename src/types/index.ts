@@ -154,6 +154,8 @@ export interface RecruiterCandidate {
   appliedAt: string
   matchScore: number
   matchBreakdown: MatchBreakdown | null
+  cvSnapshotUrl: string | null
+  cvSnapshotFilename: string | null
 }
 
 // Mirrors the backend's MatchBreakdown schema (module 4) — a

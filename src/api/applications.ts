@@ -102,5 +102,7 @@ export function mapApplicationToRecruiterCandidate(raw: ApplicationReadRaw): Rec
     appliedAt: raw.created_at,
     matchScore: raw.match_score ?? 0,
     matchBreakdown: raw.match_breakdown,
+    cvSnapshotUrl: raw.cv_snapshot_url,
+    cvSnapshotFilename: raw.cv_snapshot_filename,
   }
 }
