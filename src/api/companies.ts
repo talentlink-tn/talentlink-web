@@ -1,4 +1,4 @@
-import { api, postFile } from './client'
+import { api, getBlob, postFile } from './client'
 
 export interface CompanyGalleryPhotoRaw {
   id: string
@@ -110,6 +110,10 @@ export interface DashboardSummaryRaw {
 
 export async function getDashboardSummary(): Promise<DashboardSummaryRaw> {
   return api.get<DashboardSummaryRaw>('/companies/me/dashboard')
+}
+
+export async function downloadDashboardPdf(): Promise<Blob> {
+  return getBlob('/companies/me/dashboard/export.pdf')
 }
 
 export interface TalentPoolEntryRaw {

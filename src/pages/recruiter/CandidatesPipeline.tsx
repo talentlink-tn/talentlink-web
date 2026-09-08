@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { ArrowRight, CalendarPlus, Download, FileText, MessageCircle, XCircle } from 'lucide-react'
+import { ArrowRight, CalendarPlus, Download, FileBarChart, FileText, MessageCircle, XCircle } from 'lucide-react'
 import { Avatar } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -235,7 +235,15 @@ export function CandidatesPipeline() {
               <p className="text-xs text-text-secondary">de compatibilité avec le poste (score IA)</p>
             </div>
 
-            {selected.matchBreakdown && <MatchBreakdownDetail breakdown={selected.matchBreakdown} />}
+            {selected.matchBreakdown && (
+              <>
+                <MatchBreakdownDetail breakdown={selected.matchBreakdown} />
+                <Button variant="outline" fullWidth onClick={() => navigate(`/recruiter/candidates/${selected.id}/matching-report`)}>
+                  <FileBarChart className="size-[18px]" />
+                  Rapport de matching complet
+                </Button>
+              </>
+            )}
             <div className="flex gap-2">
               <Button variant="outline" fullWidth onClick={() => navigate('/recruiter/messages')}>
                 <MessageCircle className="size-[18px]" />

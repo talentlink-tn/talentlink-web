@@ -42,6 +42,7 @@ import { Statistics } from '@/pages/recruiter/Statistics'
 import { SubscriptionAgreement } from '@/pages/recruiter/SubscriptionAgreement'
 import { RetentionChecks } from '@/pages/recruiter/RetentionChecks'
 import { TalentPool } from '@/pages/recruiter/TalentPool'
+import { MatchingReport } from '@/pages/recruiter/MatchingReport'
 
 import { CareerPage } from '@/pages/public/CareerPage'
 import { PublicJobDetail } from '@/pages/public/PublicJobDetail'
@@ -107,6 +108,7 @@ function AppRoutes() {
         <Route index element={<RecruiterDashboard />} />
         <Route path="jobs" element={<JobsManagement />} />
         <Route path="candidates" element={<CandidatesPipeline />} />
+        <Route path="candidates/:applicationId/matching-report" element={<MatchingReport />} />
         <Route path="statistics" element={<Statistics />} />
         <Route path="messages" element={<Messages />} />
         <Route path="messages/:conversationId" element={<Conversation />} />

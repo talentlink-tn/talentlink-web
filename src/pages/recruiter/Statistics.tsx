@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { StatTile } from '@/components/ui/StatTile'
-import { Users, Briefcase, Clock, TrendingUp, Heart, UserCheck, AlertCircle } from 'lucide-react'
-import { getDashboardSummary, type DashboardSummaryRaw } from '@/api/companies'
+import { Button } from '@/components/ui/Button'
+import { Users, Briefcase, Clock, TrendingUp, Heart, UserCheck, AlertCircle, Download } from 'lucide-react'
+import { downloadDashboardPdf, getDashboardSummary, type DashboardSummaryRaw } from '@/api/companies'
+import { useApp } from '@/context/AppContext'
+import { ApiError } from '@/api/client'
 import { useBasePath } from '@/hooks/useBasePath'
 
 // No backend module tracks month-over-month history or acquisition
@@ -28,8 +31,27 @@ const sources = [
 export function Statistics() {
   const navigate = useNavigate()
   const basePath = useBasePath()
+  const { showToast } = useApp()
   const [summary, setSummary] = useState<DashboardSummaryRaw | null>(null)
+  const [exporting, setExporting] = useState(false)
   const maxMonthly = Math.max(...monthly.map((m) => m.value))
+
+  const handleExportPdf = async () => {
+    setExporting(true)
+    try {
+      const blob = await downloadDashboardPdf()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'statistiques.pdf'
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      showToast(error instanceof ApiError ? error.message : "Impossible d'exporter le rapport.")
+    } finally {
+      setExporting(false)
+    }
+  }
 
   useEffect(() => {
     getDashboardSummary()
@@ -51,8 +73,16 @@ export function Statistics() {
 
   return (
     <div>
-      <h1 className="text-xl font-extrabold text-text-primary">Statistiques</h1>
-      <p className="text-sm text-text-secondary">Performance de recrutement</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-xl font-extrabold text-text-primary">Statistiques</h1>
+          <p className="text-sm text-text-secondary">Performance de recrutement</p>
+        </div>
+        <Button variant="outline" loading={exporting} onClick={handleExportPdf}>
+          <Download className="size-[18px]" />
+          Exporter en PDF
+        </Button>
+      </div>
 
       <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
         <StatTile icon={<Users className="size-[18px]" />} value={summary?.total_applications ?? 0} label="Candidatures totales" tone="blue" />
