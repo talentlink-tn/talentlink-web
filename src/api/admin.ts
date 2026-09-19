@@ -43,8 +43,15 @@ export async function loginAdmin(email: string, password: string): Promise<void>
   setAuthToken(res.access_token, 'admin', email)
 }
 
+// Backend paginates (pre-launch performance audit: this used to load
+// every company ever registered, unconditionally, on every dashboard
+// load) — 200 is the backend's own max page size, generous enough that
+// this screen doesn't need pager UI yet at realistic near-term scale.
 export async function listCompanies(statusFilter?: CompanyStatus): Promise<CompanyAdminRaw[]> {
-  return api.get<CompanyAdminRaw[]>('/admin/companies', { query: { status_filter: statusFilter } })
+  const { items } = await api.get<{ items: CompanyAdminRaw[]; total: number }>('/admin/companies', {
+    query: { status_filter: statusFilter, limit: 200 },
+  })
+  return items
 }
 
 export async function approveCompany(companyId: string): Promise<CompanyAdminRaw> {
@@ -60,7 +67,10 @@ export async function reactivateCompany(companyId: string): Promise<CompanyAdmin
 }
 
 export async function listJobOffersAdmin(statusFilter?: JobOfferStatus): Promise<JobOfferAdminRaw[]> {
-  return api.get<JobOfferAdminRaw[]>('/admin/job-offers', { query: { status_filter: statusFilter } })
+  const { items } = await api.get<{ items: JobOfferAdminRaw[]; total: number }>('/admin/job-offers', {
+    query: { status_filter: statusFilter, limit: 200 },
+  })
+  return items
 }
 
 export async function suspendJobOfferAdmin(jobOfferId: string, reason: string): Promise<JobOfferAdminRaw> {

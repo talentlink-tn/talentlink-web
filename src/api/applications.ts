@@ -24,20 +24,26 @@ export interface ApplicationReadRaw {
   satisfaction_comment: string | null
 }
 
+// Backend paginates (pre-launch performance audit: the whole company's
+// application history loaded unconditionally on every pipeline open) —
+// 200 is the backend's own max page size, generous enough that this
+// screen doesn't need pager UI yet at realistic near-term scale.
 export async function listApplications(params?: {
   jobOfferId?: string
   statusFilter?: BackendApplicationStatus
   minScore?: number
   sort?: '-match_score' | 'match_score'
 }): Promise<ApplicationReadRaw[]> {
-  return api.get<ApplicationReadRaw[]>('/applications', {
+  const { items } = await api.get<{ items: ApplicationReadRaw[]; total: number }>('/applications', {
     query: {
       job_offer_id: params?.jobOfferId,
       status_filter: params?.statusFilter,
       min_score: params?.minScore,
       sort: params?.sort,
+      limit: 200,
     },
   })
+  return items
 }
 
 export async function getApplication(id: string): Promise<ApplicationReadRaw> {

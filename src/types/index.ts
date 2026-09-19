@@ -21,6 +21,10 @@ export interface Company {
   about: string
   agencies?: number
   followers?: number
+  /** True for a company the team deliberately keeps public as a showcase
+   * (see the pre-launch audit's demo-data finding) — never settable by
+   * the company itself, only backend-side. */
+  isDemo?: boolean
 }
 
 export interface Job {

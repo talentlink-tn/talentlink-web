@@ -109,6 +109,7 @@ export interface BackendCompanyLike {
   description?: string | null
   logo_url?: string | null
   brand_color?: string | null
+  is_demo?: boolean
 }
 
 export type BackendApplicationStatus =
@@ -255,5 +256,6 @@ export function mapCompany(company: BackendCompanyLike): Company {
     website: '',
     founded: '',
     about: company.description ?? '',
+    isDemo: company.is_demo ?? false,
   }
 }

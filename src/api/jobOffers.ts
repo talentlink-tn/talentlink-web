@@ -5,7 +5,10 @@ import { registerJob } from '@/data/jobs'
 import type { Job } from '@/types'
 
 export interface JobOfferReadRaw extends BackendJobOfferLike {
-  status: 'draft' | 'scheduled' | 'published' | 'closed' | 'archived'
+  // 'suspended' is admin-moderation-only (see AdminJobOffers.tsx) — never
+  // set by a recruiter action, but a recruiter's own listing can still
+  // return one if an admin suspended it, so this screen must render it.
+  status: 'draft' | 'scheduled' | 'published' | 'closed' | 'archived' | 'suspended'
   application_deadline?: string | null
   public_slug: string
 }

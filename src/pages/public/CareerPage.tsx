@@ -89,7 +89,14 @@ export function CareerPage() {
                   className="rounded-2xl text-2xl"
                 />
                 <div className="min-w-0 flex-1">
-                  <h1 className="text-2xl font-extrabold text-text-primary lg:text-3xl">{company.name}</h1>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h1 className="text-2xl font-extrabold text-text-primary lg:text-3xl">{company.name}</h1>
+                    {company.isDemo && (
+                      <span className="inline-flex items-center rounded-full bg-orange-50 px-2.5 py-1 text-xs font-semibold text-orange-600">
+                        Entreprise de démonstration
+                      </span>
+                    )}
+                  </div>
                   <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-text-secondary">
                     {company.sector && (
                       <span className="inline-flex items-center gap-1.5">

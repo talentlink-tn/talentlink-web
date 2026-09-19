@@ -39,6 +39,9 @@ const statusConfig: Record<ListItem['status'], { label: string; tone: 'green' | 
   published: { label: 'Active', tone: 'green' },
   closed: { label: 'Clôturée', tone: 'red' },
   archived: { label: 'Archivée', tone: 'gray' },
+  // Admin-moderation-only (see AdminJobOffers.tsx) — never set by the
+  // recruiter themselves, but their own list can still return one.
+  suspended: { label: 'Suspendue', tone: 'red' },
 }
 
 const contractOptions: { value: BackendContractType; label: string }[] = [
@@ -331,7 +334,7 @@ export function JobsManagement() {
               <button onClick={() => handleShareLinkedIn(j)} title="Partager sur LinkedIn" className="flex size-8 items-center justify-center rounded-lg border border-surface-border text-text-secondary hover:bg-surface-muted">
                 <Share2 className="size-3.5" />
               </button>
-              {j.status === 'archived' ? (
+              {j.status === 'archived' || j.status === 'suspended' ? (
                 <button
                   onClick={() => handleRestore(j.id)}
                   className="flex size-8 items-center justify-center rounded-lg border border-surface-border text-text-secondary hover:bg-surface-muted"
